@@ -29,16 +29,16 @@ get '/' do
   200
 end
 
-post '/push/:device_token/:id' do
+post '/push/:app_id/:device_token/:user_id' do
   request.body.rewind
 
   notification = Apnotic::Notification.new(params[:device_token])
 
-  notification.topic = ENV['TOPIC']
+  notification.topic = params[:app_id]
   notification.alert = { 'loc-key' => 'apns-default-message' }
   notification.mutable_content = true
   notification.custom_payload = {
-    i: params[:id],
+    i: params[:user_id],
     m: Base64.urlsafe_encode64(request.body.read),
     s: request.env['HTTP_ENCRYPTION'].split('salt=').last,
     k: request.env['HTTP_CRYPTO_KEY'].split('dh=').last.split(';').first
