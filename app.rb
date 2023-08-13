@@ -49,7 +49,7 @@ post '/push/:app_id/:device_token/:user_id' do
     notification.custom_payload = {
        i: params[:user_id],
        m: Base64.urlsafe_encode64(request.body.read),
-       s: request.env['HTTP_ENCRYPTION'].split('salt=').last,
+       s: request.env['HTTP_ENCRYPTION'].split('salt=').last.split(';').first,
        k: request.env['HTTP_CRYPTO_KEY'].split('dh=').last.split(';').first
      }
   end
