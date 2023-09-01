@@ -1,0 +1,38 @@
+body {
+    color-scheme: light dark;
+    padding: 20px 20px 20px 20px;
+    text-align: center;
+    justify-content: center;
+    font: -apple-system-body;
+    background: #fff;
+}
+
+a {
+    font-size: 1.2em;
+    color: #007aff;
+}
+
+#open_in_app {
+    background: #007aff;
+    border-radius: 12px;
+    text-decoration: none;
+    font-size: 1.5em;
+    padding: 10px 20px;
+    color: #fff;
+}
+
+.vertical-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background: #000;
+    }
+    a {
+        color: #0a84ff;
+    }
+}

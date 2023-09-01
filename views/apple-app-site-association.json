@@ -1,0 +1,23 @@
+{
+    "applinks":{
+        "details":[
+            {
+                "appIDs":[
+                    "FF973S8UP2.com.jonny.mona",
+                    "FF973S8UP2.com.jonny.monabeta"
+                ],
+                "components":[
+                    {
+                        "/":"/@*"
+                    }
+                ]
+            }
+        ]
+    },
+    "webcredentials":{
+        "apps":[
+            "FF973S8UP2.com.jonny.mona",
+            "FF973S8UP2.com.jonny.monabeta"
+        ]
+    }
+}
