@@ -72,3 +72,39 @@ post '/push/:app_id/:device_token/:user_id' do
 
   202
 end
+
+
+# Open in Mona
+require 'uri'
+require 'cgi'
+
+get '/.well-known/apple-app-site-association' do
+    send_file 'views/apple-app-site-association.json'
+end
+
+def add_param(url, param_name, param_value)
+    uri = URI(url)
+    params = URI.decode_www_form(uri.query || "") << [param_name, param_value]
+    uri.query = URI.encode_www_form(params)
+    uri.to_s
+end
+
+get '/open/:app_id' do
+    app_id = params[:app_id]
+    encoded_url_string = params[:url]
+    
+    if app_id.nil? || app_id.empty? || encoded_url_string.nil? || encoded_url_string.empty?
+        400
+    else
+        url_string = CGI.unescape(encoded_url_string)
+        param_url = add_param(url_string, "kjy", "spring")
+        app_url = app_id + "://open?url=" + encoded_url_string
+        
+        erb :OpenInMona, { :locals => {
+            :app_url => app_url,
+            :website_url => param_url,
+            :website_url_label => url_string
+        }}
+    end
+end
+
