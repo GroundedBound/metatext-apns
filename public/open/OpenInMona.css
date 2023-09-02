@@ -10,6 +10,7 @@ body {
 a {
     font-size: 1.2em;
     color: #007aff;
+    overflow-wrap: anywhere;
 }
 
 #open_in_app {
