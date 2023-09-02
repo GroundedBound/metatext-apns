@@ -3,7 +3,6 @@
 require 'apnotic'
 require 'base64'
 require 'sinatra'
-require 'cgi'
 
 require 'dotenv/load' if ENV['RACK_ENV'] == 'development'
 
@@ -75,6 +74,9 @@ post '/push/:app_id/:device_token/:user_id' do
 end
 
 
+# Open in Mona
+require 'uri'
+require 'cgi'
 
 get '/.well-known/apple-app-site-association' do
     send_file 'views/apple-app-site-association.json'
