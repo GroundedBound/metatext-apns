@@ -91,14 +91,13 @@ end
 
 get '/open/:app_id' do
     app_id = params[:app_id]
-    encoded_url_string = params[:url]
+    url_string = params[:url]
     
-    if app_id.nil? || app_id.empty? || encoded_url_string.nil? || encoded_url_string.empty?
+    if app_id.nil? || app_id.empty? || url_string.nil? || url_string.empty?
         400
     else
-        url_string = CGI.unescape(encoded_url_string)
         param_url = add_param(url_string, "kjy", "spring")
-        app_url = app_id + "://open?url=" + encoded_url_string
+        app_url = app_id + "://open?url=" + CGI.escape(url_string)
         
         erb :OpenInMona, { :locals => {
             :app_url => app_url,
@@ -107,4 +106,3 @@ get '/open/:app_id' do
         }}
     end
 end
-
