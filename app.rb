@@ -26,7 +26,7 @@ CONNECTION_POOL =
   end
 
 get '/' do
-  200
+  redirect 'https://geo.itunes.apple.com/app/id1659154653'
 end
 
 post '/push/:app_id/:device_token/:user_id' do
