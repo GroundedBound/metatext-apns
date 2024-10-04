@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Mona for Mastodon</title>
+    <link rel="me" href="https://mastodon.social/@jonny_kuang">
+    <link rel="me" href="https://mastodon.social/@monaapp">
+    <script type="text/javascript">
+        if (<%= auto_redirect %>) {
+            window.location.href = "https://geo.itunes.apple.com/app/id1659154653";
+        }
+    </script>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* Center the content */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            padding: 20px; /* Ensures some space on very small screens */
+        }
+        
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #121212;
+                color: #ffffff;
+            }
+            
+            /* Use dark mode button */
+            .app-store-button img {
+                content: url('home/Download_on_the_App_Store_Badge_White.svg');
+            }
+        }
+        
+        /* Center container */
+        .center-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            max-width: 100%; /* Ensures content does not overflow horizontally */
+        }
+        
+        /* App icon */
+        .app-icon {
+            width: 160px;
+            height: 160px;
+            margin-bottom: 20px;
+        }
+        
+        /* App Store button */
+        .app-store-button img {
+            width: 120px;
+            height: 40px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="center-container">
+        <!-- App Icon -->
+        <img class="app-icon" src="home/appicon.webp" alt="Mona for Mastodon">
+
+        <!-- Download on the App Store Badge -->
+        <a href="https://geo.itunes.apple.com/app/id1659154653" class="app-store-button">
+            <img src="home/Download_on_the_App_Store_Badge_Black.svg" alt="Download on the App Store">
+        </a>
+    </div>
+</body>
+</html>

@@ -25,10 +25,6 @@ CONNECTION_POOL =
     connection.on(:error) { |e| puts "Connection error: #{e}" }
   end
 
-get '/' do
-  redirect 'https://geo.itunes.apple.com/app/id1659154653'
-end
-
 post '/push/:app_id/:device_token/:user_id' do
   request.body.rewind
 
@@ -106,4 +102,16 @@ get '/open/:app_id' do
             :website_url_label => url_string
         }}
     end
+end
+
+get '/' do
+    erb :DownloadMona, { :locals => {
+        :auto_redirect => "true",
+    }}
+end
+
+get '/home' do
+    erb :DownloadMona, { :locals => {
+        :auto_redirect => "false",
+    }}
 end
