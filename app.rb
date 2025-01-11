@@ -125,7 +125,8 @@ get '/live_photos' do
         app_url = "mona-livephotos://show?id=" + CGI.escape(id)
         
         erb :LivePhotos, { :locals => {
-            :app_url => app_url
+            :app_url => app_url,
+            :og_url => request.url
         }}
     end
 end
