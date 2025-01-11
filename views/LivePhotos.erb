@@ -8,7 +8,7 @@
     <link rel="me" href="https://mastodon.social/@monaapp">
     
     <meta property="og:title" content="‎Mona Cloud Photos: high resolution HDR and Live Photos">
-    <meta property="og:description" content="‎View my Live Photos in the Mona app. Mona is available on iPhone, iPad, and Mac.">
+    <meta property="og:description" content="‎Check these Live Photos I uploaded via the Mona app!">
     <meta property="og:site_name" content="Mona Cloud Photos">
     <meta property="og:url" content="<%= og_url %>">
     <meta property="og:image" content="https://getmona.app/link_preview/link_preview.png">
@@ -21,7 +21,7 @@
     <meta property="og:locale" content="en_US">
 
     <meta name="twitter:title" content="Mona Cloud Photos: high resolution HDR and Live Photos">
-    <meta name="twitter:description" content="View my Live Photos in the Mona app. Mona is available on iPhone, iPad, and Mac.">
+    <meta name="twitter:description" content="‎Check these Live Photos I uploaded via the Mona app!">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://getmona.app/link_preview/link_preview.png">
     <meta name="twitter:image:alt" content="Mona for Mastodon on the App Store">
@@ -91,7 +91,7 @@
             
             /* Use dark mode button */
             .app-store-button img {
-                content: url('home/Download_on_the_App_Store_Badge_White.svg');
+                content: url('../home/Download_on_the_App_Store_Badge_White.svg');
             }
             
             .label-text a {
@@ -104,17 +104,17 @@
     <div class="center-container">
         <!-- Clickable App Icon -->
         <a href="<%= app_url %>">
-            <img class="app-icon" src="home/appicon.webp" alt="Mona for Mastodon">
+            <img class="app-icon" src="../home/appicon.webp" alt="Mona for Mastodon">
         </a>
             
         <!-- Text Label with Link -->
         <p class="label-text">
-        Open the <a href="<%= app_url %>">Mona app</a> to view Live Photos
+        <a href="<%= app_url %>">Open Mona</a> to view Live Photos
         </p>
 
         <!-- Download on the App Store Badge -->
         <a href="https://geo.itunes.apple.com/app/id1659154653" class="app-store-button">
-            <img src="home/Download_on_the_App_Store_Badge_Black.svg" alt="Download on the App Store">
+            <img src="../home/Download_on_the_App_Store_Badge_Black.svg" alt="Download on the App Store">
         </a>
     </div>
 </body>
