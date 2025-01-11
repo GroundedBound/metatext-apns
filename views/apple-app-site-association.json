@@ -1,32 +1,36 @@
 {
-    "applinks":{
-        "details":[
+    "applinks": {
+        "details": [
             {
-                "appIDs":[
+                "appIDs": [
                     "FF973S8UP2.com.jonny.mona"
                 ],
-                "components":[
+                "components": [
                     {
-                        "/":"/open/com.jonny.mona",
-                        "/":"/live_photos"
+                        "/": "/open/com.jonny.mona"
+                    },
+                    {
+                        "/": "/live_photos"
                     }
                 ]
             },
             {
-                "appIDs":[
+                "appIDs": [
                     "FF973S8UP2.com.jonny.monabeta"
                 ],
-                "components":[
+                "components": [
                     {
-                        "/":"/open/com.jonny.monabeta",
-                        "/":"/live_photos"
+                        "/": "/open/com.jonny.monabeta"
+                    },
+                    {
+                        "/": "/live_photos"
                     }
                 ]
             }
         ]
     },
-    "webcredentials":{
-        "apps":[
+    "webcredentials": {
+        "apps": [
             "FF973S8UP2.com.jonny.mona",
             "FF973S8UP2.com.jonny.monabeta"
         ]
