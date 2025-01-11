@@ -116,9 +116,7 @@ get '/home' do
     }}
 end
 
-get '/live_photos' do
-    id = params[:id]
-    
+get '/live_photos/:id' do
     if id.nil? || id.empty?
         400
     else
