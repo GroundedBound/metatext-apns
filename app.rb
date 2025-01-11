@@ -115,3 +115,17 @@ get '/home' do
         :auto_redirect => "false",
     }}
 end
+
+get '/live_photos' do
+    id = params[:id]
+    
+    if id.nil? || id.empty?
+        400
+    else
+        app_url = "mona-livephotos://show?id=" + CGI.escape(id)
+        
+        erb :LivePhotos, { :locals => {
+            :app_url => app_url
+        }}
+    end
+end

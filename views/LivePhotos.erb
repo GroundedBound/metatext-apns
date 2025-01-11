@@ -28,9 +28,7 @@
     <meta name="twitter:image:alt" content="Mona for Mastodon on the App Store">
     
     <script type="text/javascript">
-        if (<%= auto_redirect %>) {
-            window.location.href = "https://geo.itunes.apple.com/app/id1659154653";
-        }
+        
     </script>
     <style>
         /* Basic Reset */
@@ -51,19 +49,6 @@
             padding: 20px; /* Ensures some space on very small screens */
         }
         
-        /* Dark mode support */
-        @media (prefers-color-scheme: dark) {
-            body {
-                background-color: #121212;
-                color: #ffffff;
-            }
-            
-            /* Use dark mode button */
-            .app-store-button img {
-                content: url('home/Download_on_the_App_Store_Badge_White.svg');
-            }
-        }
-        
         /* Center container */
         .center-container {
             display: flex;
@@ -80,20 +65,56 @@
             margin-bottom: 20px;
         }
         
+        /* Label text */
+        .label-text {
+            font: -apple-system-headline;
+            font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 1.25em; /* Scales the font to 1.25 times the base size */
+            margin: 20px 0; /* Equal spacing above and below */
+            text-align: center; /* Ensures the text is aligned properly */
+        }
+        
         /* App Store button */
         .app-store-button img {
             width: 120px;
             height: 40px;
             margin-top: 20px;
         }
+        
+        /* Link styling */
+        .label-text a {
+            color: #007AFF;
+        }
+        
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #121212;
+                color: #ffffff;
+            }
+            
+            /* Use dark mode button */
+            .app-store-button img {
+                content: url('home/Download_on_the_App_Store_Badge_White.svg');
+            }
+            
+            .label-text a {
+                color: #0A84FF;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="center-container">
         <!-- Clickable App Icon -->
-        <a href="https://geo.itunes.apple.com/app/id1659154653">
+        <a href="<%= app_url %>">
             <img class="app-icon" src="home/appicon.webp" alt="Mona for Mastodon">
         </a>
+            
+        <!-- Text Label with Link -->
+        <p class="label-text">
+        Open the <a href="<%= app_url %>">Mona app</a> to view Live Photos
+        </p>
 
         <!-- Download on the App Store Badge -->
         <a href="https://geo.itunes.apple.com/app/id1659154653" class="app-store-button">
