@@ -21,9 +21,6 @@
                 "components": [
                     {
                         "/": "/open/com.jonny.monabeta"
-                    },
-                    {
-                        "/": "/live_photos"
                     }
                 ]
             }
