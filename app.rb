@@ -130,3 +130,15 @@ get '/live_photos/:id' do
         }}
     end
 end
+
+get '/redirect' do
+    url = params[:url]
+    
+    if url.nil? || url.empty?
+        400
+    else
+        erb :Redirect, { :locals => {
+            :redirect_url => url
+        }}
+    end
+end
