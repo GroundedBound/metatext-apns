@@ -3,16 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Download Mona for Mastodon</title>
-    <link rel="me" href="https://mastodon.social/@jonny_kuang">
-    <link rel="me" href="https://mastodon.social/@monaapp">
+    <title><%= title %></title>
     
-    <meta property="og:title" content="‎Mona for Mastodon">
-    <meta property="og:description" content="‎Mona is a highly customizable Mastodon app with VoiceOver optimization and native design. Available now on iPhone, iPad, and Mac.">
-    <meta property="og:site_name" content="App Store">
-    <meta property="og:url" content="https://geo.itunes.apple.com/app/id1659154653">
+    <meta property="og:title" content="‎<%= title %>">
+    <meta property="og:url" content="<%= og_url %>">
     <meta property="og:image" content="https://getmona.app/link_preview/link_preview.png">
-    <meta property="og:image:alt" content="Mona for Mastodon on the App Store">
     <meta property="og:image:type" content="image/png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -20,12 +15,9 @@
     <meta property="og:type" content="website">
     <meta property="og:locale" content="en_US">
 
-    <meta name="twitter:title" content="‎Mona for Mastodon">
-    <meta name="twitter:description" content="‎Mona is a highly customizable Mastodon app with VoiceOver optimization and native design. Available now on iPhone, iPad, and Mac.">
-    <meta name="twitter:site" content="@AppStore">
+    <meta name="twitter:title" content="‎<%= title %>">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://getmona.app/link_preview/link_preview.png">
-    <meta name="twitter:image:alt" content="Mona for Mastodon on the App Store">
     
     <style>
         /* Basic Reset */
@@ -46,19 +38,6 @@
             padding: 20px; /* Ensures some space on very small screens */
         }
         
-        /* Dark mode support */
-        @media (prefers-color-scheme: dark) {
-            body {
-                background-color: #121212;
-                color: #ffffff;
-            }
-            
-            /* Use dark mode button */
-            .app-store-button img {
-                content: url('home/Download_on_the_App_Store_Badge_White.svg');
-            }
-        }
-        
         /* Center container */
         .center-container {
             display: flex;
@@ -75,20 +54,56 @@
             margin-bottom: 20px;
         }
         
+        /* Label text */
+        .label-text {
+            font: -apple-system-headline;
+            font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 1.25em; /* Scales the font to 1.25 times the base size */
+            margin: 20px 0; /* Equal spacing above and below */
+            text-align: center; /* Ensures the text is aligned properly */
+        }
+        
         /* App Store button */
         .app-store-button img {
             width: 120px;
             height: 40px;
             margin-top: 20px;
         }
+        
+        /* Link styling */
+        .label-text a {
+            color: #007AFF;
+        }
+        
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #121212;
+                color: #ffffff;
+            }
+            
+            /* Use dark mode button */
+            .app-store-button img {
+                content: url('../home/Download_on_the_App_Store_Badge_White.svg');
+            }
+            
+            .label-text a {
+                color: #0A84FF;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="center-container">
         <!-- Clickable App Icon -->
-        <a href="<%= redirect_url %>" target="_blank" rel="noopener noreferrer">
+        <a href="<%= redirect_url %>">
             <img class="app-icon" src="home/appicon.webp" alt="Mona for Mastodon">
         </a>
+        
+        <!-- Text Label with Link -->
+        <p class="label-text">
+        <a href="<%= redirect_url %>"><%= text %></a>
+        </p>
     </div>
 </body>
 </html>

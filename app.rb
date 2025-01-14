@@ -137,8 +137,22 @@ get '/redirect' do
     if url.nil? || url.empty?
         400
     else
+        title = params[:title]
+        text = params[:text]
+        
+        if title.nil? || title.empty?
+            title = "Redirect"
+        end
+        
+        if text.nil? || text.empty?
+            text = url
+        end
+        
         erb :Redirect, { :locals => {
-            :redirect_url => url
+            :og_url => request.url,
+            :redirect_url => url,
+            :title => title,
+            :text => text
         }}
     end
 end
