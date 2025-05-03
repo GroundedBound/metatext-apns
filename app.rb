@@ -156,3 +156,7 @@ get '/redirect' do
         }}
     end
 end
+
+get '/golden_egg' do
+    redirect "https://goldenegg-437a247aad0c.herokuapp.com", 302
+end
