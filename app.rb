@@ -157,7 +157,13 @@ get '/redirect' do
     end
 end
 
+get '/goldenegg' do
+    query = request.query_string
+    redirect "https://goldenegg-437a247aad0c.herokuapp.com/#{query.empty? ? '' : '?' + query}", 302
+end
+
 get '/goldenegg/*' do
     subpath = params['splat'].first
-    redirect "https://goldenegg-437a247aad0c.herokuapp.com/#{subpath}", 302
+    query = request.query_string
+    redirect "https://goldenegg-437a247aad0c.herokuapp.com/#{subpath}#{query.empty? ? '' : '?' + query}", 302
 end
