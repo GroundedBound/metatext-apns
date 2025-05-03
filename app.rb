@@ -157,6 +157,7 @@ get '/redirect' do
     end
 end
 
-get '/goldenegg' do
-    redirect "https://goldenegg-437a247aad0c.herokuapp.com", 302
+get '/goldenegg/*' do
+    subpath = params['splat'].first
+    redirect "https://goldenegg-437a247aad0c.herokuapp.com/#{subpath}", 302
 end
