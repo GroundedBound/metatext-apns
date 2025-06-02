@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'apnotic'
+#require 'apnotic'
 require 'base64'
 require 'sinatra'
 
@@ -8,69 +8,69 @@ require 'dotenv/load' if ENV['RACK_ENV'] == 'development'
 
 require_relative 'LivePhotos'
 
-CONNECTION_OPTIONS = {
-  auth_method: :token,
-  cert_path: StringIO.new(ENV['APNS_AUTH_KEY']),
-  key_id: ENV['APNS_KEY_ID'],
-  team_id: ENV['APPLE_TEAM_ID']
-}.freeze
-
-SANDBOX_CONNECTION = Apnotic::Connection.development(CONNECTION_OPTIONS.dup)
-
-SANDBOX_CONNECTION.on(:error) { |e| puts "Connection error (sandbox): #{e}" }
-
-CONNECTION_POOL =
-  Apnotic::ConnectionPool.new(
-    CONNECTION_OPTIONS.dup,
-    size: ENV['CONNECTION_POOL_SIZE'].to_i
-  ) do |connection|
-    connection.on(:error) { |e| puts "Connection error: #{e}" }
-  end
-
-post '/push/:app_id/:device_token/:user_id' do
-  request.body.rewind
-
-  notification = Apnotic::Notification.new(params[:device_token])
-
-  notification.topic = params[:app_id]
-  notification.alert = { 'loc-key' => 'apns-default-message' }
-  notification.mutable_content = true
-  notification.interruption_level = "passive"
-
-  if params[:fullenv] == 'true'
-    notification.custom_payload = {
-       i: params[:user_id],
-       m: Base64.urlsafe_encode64(request.body.read),
-       s: request.env['HTTP_ENCRYPTION'],
-       k: request.env['HTTP_CRYPTO_KEY']
-     }
-  else
-    notification.custom_payload = {
-       i: params[:user_id],
-       m: Base64.urlsafe_encode64(request.body.read),
-       s: request.env['HTTP_ENCRYPTION'].split('salt=').last.split(';').first,
-       k: request.env['HTTP_CRYPTO_KEY'].split('dh=').last.split(';').first
-     }
-  end
-
-  if params[:sandbox] == 'true'
-    push = SANDBOX_CONNECTION.prepare_push(notification)
-
-    push.on(:response) { |r| puts "Bad response (sandbox): #{r.inspect}" unless r.ok? }
-
-    SANDBOX_CONNECTION.push_async(push)
-  else
-    CONNECTION_POOL.with do |connection|
-      push = connection.prepare_push(notification)
-
-      push.on(:response) { |r| puts "Bad response: #{r.inspect}" unless r.ok? }
-
-      connection.push_async(push)
-    end
-  end
-
-  202
-end
+#CONNECTION_OPTIONS = {
+#  auth_method: :token,
+#  cert_path: StringIO.new(ENV['APNS_AUTH_KEY']),
+#  key_id: ENV['APNS_KEY_ID'],
+#  team_id: ENV['APPLE_TEAM_ID']
+#}.freeze
+#
+#SANDBOX_CONNECTION = Apnotic::Connection.development(CONNECTION_OPTIONS.dup)
+#
+#SANDBOX_CONNECTION.on(:error) { |e| puts "Connection error (sandbox): #{e}" }
+#
+#CONNECTION_POOL =
+#  Apnotic::ConnectionPool.new(
+#    CONNECTION_OPTIONS.dup,
+#    size: ENV['CONNECTION_POOL_SIZE'].to_i
+#  ) do |connection|
+#    connection.on(:error) { |e| puts "Connection error: #{e}" }
+#  end
+#
+#post '/push/:app_id/:device_token/:user_id' do
+#  request.body.rewind
+#
+#  notification = Apnotic::Notification.new(params[:device_token])
+#
+#  notification.topic = params[:app_id]
+#  notification.alert = { 'loc-key' => 'apns-default-message' }
+#  notification.mutable_content = true
+#  notification.interruption_level = "passive"
+#
+#  if params[:fullenv] == 'true'
+#    notification.custom_payload = {
+#       i: params[:user_id],
+#       m: Base64.urlsafe_encode64(request.body.read),
+#       s: request.env['HTTP_ENCRYPTION'],
+#       k: request.env['HTTP_CRYPTO_KEY']
+#     }
+#  else
+#    notification.custom_payload = {
+#       i: params[:user_id],
+#       m: Base64.urlsafe_encode64(request.body.read),
+#       s: request.env['HTTP_ENCRYPTION'].split('salt=').last.split(';').first,
+#       k: request.env['HTTP_CRYPTO_KEY'].split('dh=').last.split(';').first
+#     }
+#  end
+#
+#  if params[:sandbox] == 'true'
+#    push = SANDBOX_CONNECTION.prepare_push(notification)
+#
+#    push.on(:response) { |r| puts "Bad response (sandbox): #{r.inspect}" unless r.ok? }
+#
+#    SANDBOX_CONNECTION.push_async(push)
+#  else
+#    CONNECTION_POOL.with do |connection|
+#      push = connection.prepare_push(notification)
+#
+#      push.on(:response) { |r| puts "Bad response: #{r.inspect}" unless r.ok? }
+#
+#      connection.push_async(push)
+#    end
+#  end
+#
+#  202
+#end
 
 
 # Open in Mona
