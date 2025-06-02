@@ -4,6 +4,10 @@
 require 'base64'
 require 'sinatra'
 
+configure :production do
+    set :show_exceptions, true
+end
+
 require 'dotenv/load' if ENV['RACK_ENV'] == 'development'
 
 #require_relative 'LivePhotos'
