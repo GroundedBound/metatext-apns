@@ -6,6 +6,8 @@ require 'sinatra'
 
 require 'dotenv/load' if ENV['RACK_ENV'] == 'development'
 
+require_relative 'LivePhotos'
+
 CONNECTION_OPTIONS = {
   auth_method: :token,
   cert_path: StringIO.new(ENV['APNS_AUTH_KEY']),
@@ -116,21 +118,6 @@ get '/home' do
     }}
 end
 
-get '/live_photos/:id' do
-    id = params[:id]
-    
-    if id.nil? || id.empty?
-        400
-    else
-        app_url = "mona-livephotos://show?id=" + CGI.escape(id)
-        
-        erb :LivePhotos, { :locals => {
-            :app_url => app_url,
-            :og_url => request.url
-        }}
-    end
-end
-
 get '/redirect' do
     url = params[:url]
     
@@ -157,13 +144,29 @@ get '/redirect' do
     end
 end
 
-get '/goldenegg' do
-    query = request.query_string
-    redirect "https://goldenegg-437a247aad0c.herokuapp.com/#{query.empty? ? '' : '?' + query}", 302
+get '/live_photos/:id' do
+    id = params[:id]
+    return "Invalid URL" if id.nil? || id.empty?
+    
+    json_string = show_live_photos(id, params[:environment])
+    
+    if json_string
+        erb :LivePhotoViewer, locals: {
+            records_json: json_string
+        }
+    else
+        app_url = "mona-livephotos://show?id=#{CGI.escape(id)}"
+        erb :LivePhotos, locals: {
+            app_url: app_url,
+            og_url: request.url
+        }
+    end
 end
 
-get '/goldenegg/*' do
-    subpath = params['splat'].first
-    query = request.query_string
-    redirect "https://goldenegg-437a247aad0c.herokuapp.com/#{subpath}#{query.empty? ? '' : '?' + query}", 302
+get '/live_photos' do
+    "Invalid URL"
+end
+
+get '/live_photos/' do
+    "Invalid URL"
 end
