@@ -119,16 +119,31 @@ def show_live_photos(id, environment)
     structured_records.to_json
 end
 
-#get '/live_photos/:id' do
-#    id = params[:id]
-#    return "Invalid URL" if id.nil? || id.empty?
-#    show_live_photos(id, params[:environment])
-#end
-#
-#get '/live_photos' do
-#    "Invalid URL"
-#end
-#
-#get '/live_photos/' do
-#    "Invalid URL"
-#end
+get '/live_photos/:id' do
+    id = params[:id]
+    return "Invalid URL" if id.nil? || id.empty?
+    
+    json_string = show_live_photos(id, params[:environment])
+    app_url = "mona-livephotos://show?id=#{CGI.escape(id)}"
+    
+    if json_string
+        erb :LivePhotoViewer, locals: {
+            app_url: app_url,
+            og_url: request.url,
+            records_json: json_string,
+        }
+    else
+        erb :LivePhotos, locals: {
+            app_url: app_url,
+            og_url: request.url
+        }
+    end
+end
+
+get '/live_photos' do
+    "Invalid URL"
+end
+
+get '/live_photos/' do
+    "Invalid URL"
+end
