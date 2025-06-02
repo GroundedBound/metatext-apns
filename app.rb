@@ -8,6 +8,8 @@ configure :production do
     set :show_exceptions, true
 end
 
+set :views, File.expand_path('../views', __FILE__)
+
 require 'dotenv/load' if ENV['RACK_ENV'] == 'development'
 
 #require_relative 'LivePhotos'
