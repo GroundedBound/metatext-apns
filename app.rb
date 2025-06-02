@@ -107,9 +107,7 @@ get '/open/:app_id' do
 end
 
 get '/' do
-    erb :DownloadMona, { :locals => {
-        :auto_redirect => "true",
-    }}
+    erb :DownloadMona
 end
 
 get '/home' do
