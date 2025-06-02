@@ -122,7 +122,7 @@ get '/redirect' do
     url = params[:url]
     
     if url.nil? || url.empty?
-        400
+        "400"
     else
         title = params[:title]
         text = params[:text]
