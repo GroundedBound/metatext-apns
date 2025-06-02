@@ -1,30 +1,42 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    apnotic (1.7.0)
+    apnotic (1.7.2)
       connection_pool (~> 2)
       net-http2 (>= 0.18.3, < 2)
-    ast (2.4.2)
-    connection_pool (2.3.0)
+    ast (2.4.3)
+    bigdecimal (3.2.1)
+    connection_pool (2.5.3)
+    csv (3.3.5)
     dotenv (2.8.1)
-    http-2 (0.11.0)
-    json (2.6.2)
-    mustermann (3.0.0)
+    http-2 (1.1.1)
+    httparty (0.23.1)
+      csv
+      mini_mime (>= 1.0.0)
+      multi_xml (>= 0.5.2)
+    json (2.12.2)
+    mini_mime (1.1.5)
+    multi_xml (0.7.2)
+      bigdecimal (~> 3.1)
+    mustermann (3.0.3)
       ruby2_keywords (~> 0.0.1)
-    net-http2 (0.18.4)
-      http-2 (~> 0.11)
-    nio4r (2.5.8)
-    parallel (1.22.1)
-    parser (3.1.2.1)
+    net-http2 (0.19.0)
+      http-2 (>= 1.0)
+    nio4r (2.7.4)
+    parallel (1.27.0)
+    parser (3.3.8.0)
       ast (~> 2.4.1)
-    puma (6.0.0)
+      racc
+    prism (1.4.0)
+    puma (6.0.2)
       nio4r (~> 2.0)
-    rack (2.2.4)
-    rack-protection (3.0.3)
+    racc (1.8.1)
+    rack (2.2.16)
+    rack-protection (3.0.6)
       rack
     rainbow (3.1.1)
-    regexp_parser (2.6.0)
-    rexml (3.2.5)
+    regexp_parser (2.10.0)
+    rexml (3.4.1)
     rubocop (1.38.0)
       json (~> 2.3)
       parallel (~> 1.10)
@@ -35,30 +47,34 @@ GEM
       rubocop-ast (>= 1.23.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 3.0)
-    rubocop-ast (1.23.0)
-      parser (>= 3.1.1.0)
-    ruby-progressbar (1.11.0)
+    rubocop-ast (1.44.1)
+      parser (>= 3.3.7.2)
+      prism (~> 1.4)
+    ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
-    sinatra (3.0.3)
+    sinatra (3.0.6)
       mustermann (~> 3.0)
       rack (~> 2.2, >= 2.2.4)
-      rack-protection (= 3.0.3)
+      rack-protection (= 3.0.6)
       tilt (~> 2.0)
-    tilt (2.0.11)
-    unicode-display_width (2.3.0)
+    tilt (2.6.0)
+    unicode-display_width (2.6.0)
 
 PLATFORMS
+  arm64-darwin-24
   ruby
 
 DEPENDENCIES
   apnotic (~> 1.7.0)
   dotenv (~> 2.8.1)
+  httparty (~> 0.23.1)
+  json (~> 2.12.2)
   puma (~> 6.0.0)
   rubocop (~> 1.38.0)
   sinatra (~> 3.0.3)
 
 RUBY VERSION
-   ruby 3.1.2p20
+   ruby 3.3.5p100
 
 BUNDLED WITH
-   2.3.25
+   2.6.9
