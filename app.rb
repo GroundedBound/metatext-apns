@@ -6,7 +6,7 @@ require 'sinatra'
 
 require 'dotenv/load' if ENV['RACK_ENV'] == 'development'
 
-require_relative 'LivePhotos'
+#require_relative 'LivePhotos'
 
 #CONNECTION_OPTIONS = {
 #  auth_method: :token,
