@@ -119,16 +119,16 @@ def show_live_photos(id, environment)
     structured_records.to_json
 end
 
-get '/live_photos/:id' do
-    id = params[:id]
-    return "Invalid URL" if id.nil? || id.empty?
-    show_live_photos(id, params[:environment])
-end
-
-get '/live_photos' do
-    "Invalid URL"
-end
-
-get '/live_photos/' do
-    "Invalid URL"
-end
+#get '/live_photos/:id' do
+#    id = params[:id]
+#    return "Invalid URL" if id.nil? || id.empty?
+#    show_live_photos(id, params[:environment])
+#end
+#
+#get '/live_photos' do
+#    "Invalid URL"
+#end
+#
+#get '/live_photos/' do
+#    "Invalid URL"
+#end
