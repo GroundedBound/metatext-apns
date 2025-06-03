@@ -180,6 +180,11 @@
               // Already loaded; play it if possible
               const player = page.querySelector('.player');
               if (player?.play) player.play();
+            } else {
+              const player = page.querySelector('.player');
+              if (player.isPlaying) {
+                player.stop();
+              }
             }
           }
         }
@@ -230,7 +235,7 @@
         clearTimeout(scrollTimeout);
         scrollTimeout = setTimeout(() => {
           onScroll(true); // update after scroll stops
-        }, 50); // wait 50ms after last scroll event
+        }, 100); // wait 100ms after last scroll event
       });
       
       // Update on window resize to adjust scroll position exactly
