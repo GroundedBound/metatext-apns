@@ -25,126 +25,8 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://getmona.app/link_preview/link_preview_2.png">
     <meta name="twitter:image:alt" content="Mona for Mastodon on the App Store">
-    <style>
-      html, body {
-        margin: 0; padding: 0;
-        height: 100%;
-        background: black;
-        overflow: hidden; /* prevent vertical scroll */
-        font-family: sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-      }
-      body {
-        display: flex; flex-direction: column;
-        height: 100vh;
-      }
-      
-      /* Carousel container */
-      .carousel {
-        flex: 1 1 auto;
-        display: flex;
-        overflow: auto;
-        scroll-snap-type: x mandatory;
-        scroll-behavior: smooth;
-        -webkit-overflow-scrolling: touch; /* smooth scroll on iOS */
-        width: 100vw;
-        scroll-padding: 0; /* snap to edge */
-      }
-      
-      /* Hide scrollbar */
-      .carousel::-webkit-scrollbar {
-        display: none;
-      }
-      .carousel {
-        -ms-overflow-style: none;  /* IE and Edge */
-        scrollbar-width: none;  /* Firefox */
-      }
-      
-      /* Each page fills viewport */
-      .page {
-        scroll-snap-align: start;
-        flex: 0 0 100vw;
-        position: relative;
-        background: black;
-      }
-      
-      /* Player fills page */
-      .page > .player {
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        width: 100%;
-        height: 100%;
-        background-color: black;
-      }
-      
-      /* Controls container */
-      .controls {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 10px 0;
-        user-select: none;
-      }
-      
-      /* Buttons */
-      button {
-        background: #222;
-        border: none;
-        color: white;
-        padding: 5px 8px;
-        margin: 0 10px;
-        font-size: 20px;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: background 0.2s ease;
-      }
-      button:disabled {
-        opacity: 0.3;
-        cursor: default;
-      }
-      button:hover:not(:disabled) {
-        background: #555;
-      }
-      
-      /* Pagination dots */
-      .dots {
-        display: flex;
-        gap: 8px;
-      }
-      .dot {
-        width: 10px;
-        height: 10px;
-        background: #444;
-        border-radius: 50%;
-        cursor: pointer;
-        transition: background 0.3s ease;
-      }
-      .dot.active {
-        background: #eee;
-      }
-      
-      .spinner {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 32px;
-        height: 32px;
-        border: 4px solid #ccc;
-        border-top: 4px solid #555;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-        transform: translate(-50%, -50%);
-        z-index: 10;
-      }
-      
-      @keyframes spin {
-        to {
-          transform: translate(-50%, -50%) rotate(360deg);
-        }
-      }
-      
-    </style>
+    
+    <link rel="stylesheet" href="LivePhotoViewer.css">
     <script src="https://cdn.apple-livephotoskit.com/lpk/1/livephotoskit.js"></script>
   </head>
   <body>
@@ -227,11 +109,11 @@
       }
       
       // Function to create and return a LivePhotosKit player
-      function createPlayer(record) {
+      function createPlayer(record, shouldPlay = false) {
         const player = LivePhotosKit.createPlayer();
         player.className = 'player';
         player.showsNativeControls = false;
-        // player.proactivelyLoadsVideo = true;
+        player.proactivelyLoadsVideo = shouldPlay;
         
         const photoUrl = record.photo?.downloadURL;
         const videoUrl = record.video?.downloadURL;
@@ -258,6 +140,9 @@
             spinner.remove();
             if (videoUrl) {
               player.showsNativeControls = true;
+              if (shouldPlay) {
+                player.play();
+              }
             }
           });
           fetch(photoUrl).then(res => res.arrayBuffer()).then(buf => {
@@ -280,20 +165,22 @@
       }
       
       // Lazy load players only for currentPage and neighbors
-      function loadVisiblePlayers() {
+      function loadVisiblePlayers(autoplay) {
         for(let i=0; i<totalPages; i++) {
           const page = document.getElementById(`page${i+1}`);
           if(!page) continue;
           
           // Load only current page and neighbors
-          if(Math.abs(i - currentPage) <= 1) {
-            if(page.children.length === 0) {
-              const player = createPlayer(records[i]);
+          if (Math.abs(i - currentPage) <= 1) {
+            if (page.children.length === 0) {
+              const shouldPlay = autoplay && i === currentPage;
+              const player = createPlayer(records[i], shouldPlay);
               page.appendChild(player);
+            } else if (autoplay && i === currentPage) {
+              // Already loaded; play it if possible
+              const player = page.querySelector('.player');
+              if (player?.play) player.play();
             }
-          } else {
-            // Remove players not near current page to save memory
-            // while(page.firstChild) page.removeChild(page.firstChild);
           }
         }
       }
@@ -315,13 +202,13 @@
       }
       
       // Update currentPage based on scroll position
-      function onScroll() {
+      function onScroll(scrollingStopped) {
         const scrollLeft = carousel.scrollLeft;
         const pageWidth = window.innerWidth;
         const newPage = Math.round(scrollLeft / pageWidth);
-        if(newPage !== currentPage) {
+        if(newPage !== currentPage || scrollingStopped) {
           currentPage = newPage;
-          loadVisiblePlayers();
+          loadVisiblePlayers(scrollingStopped);
           updateControls();
         }
       }
@@ -334,10 +221,16 @@
         scrollToPage(currentPage + 1);
       });
       
+      let scrollTimeout;
+      
       // Listen to scroll events to update currentPage
       carousel.addEventListener('scroll', () => {
-        // debounce or throttle scroll for performance, but simple is fine here
-        onScroll();
+        onScroll(false);
+        
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+          onScroll(true); // update after scroll stops
+        }, 50); // wait 50ms after last scroll event
       });
       
       // Update on window resize to adjust scroll position exactly
@@ -346,11 +239,10 @@
       });
       
       // Initial load
-      loadVisiblePlayers();
+      loadVisiblePlayers(true);
       updateControls();
       
       </script>
       
     </body>
 </html>
-      
