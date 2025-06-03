@@ -51,6 +51,7 @@ body {
 .page {
     scroll-snap-align: start;
     flex: 0 0 100vw;
+    flex: 0 0 100dvw;
     position: relative;
     background: black;
 }
