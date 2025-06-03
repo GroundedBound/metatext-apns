@@ -139,6 +139,7 @@ get '/live_photos/:id' do
             app_url: app_url,
             og_url: request.url,
             records_json: json_string,
+            report_record_id: id
         }
     else
         erb :LivePhotos, locals: {
@@ -154,4 +155,34 @@ end
 
 get '/live_photos/' do
     "Invalid URL"
+end
+
+post '/api/report_live_photos' do
+    content_type :json
+    
+    begin
+        # Parse JSON body
+        request_payload = JSON.parse(request.body.read)
+        
+        record_id = request_payload['recordId']
+        reason    = request_payload['reason']
+        comment   = request_payload['comment']
+        
+        # Basic validation
+        if record_id.nil? || reason.nil? || record_id.strip.empty? || reason.strip.empty?
+            status 400
+            return { error: "recordId and reason are required." }.to_json
+        end
+        
+        # Here you can store the report in a database or log it
+        puts "Received report: record_id=#{record_id}, reason=#{reason}, comment=#{comment}"
+        
+        # Return success response
+        status 200
+        { message: "Report received." }.to_json
+        
+    rescue JSON::ParserError
+        status 400
+        { error: "Invalid JSON." }.to_json
+    end
 end

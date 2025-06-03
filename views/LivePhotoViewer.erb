@@ -27,15 +27,44 @@
     <meta name="twitter:image:alt" content="Mona for Mastodon on the App Store">
     
     <link rel="stylesheet" href="LivePhotoViewer.css">
+    <link rel="stylesheet" href="ReportButton.css">
     <script src="https://cdn.apple-livephotoskit.com/lpk/1/livephotoskit.js"></script>
   </head>
   <body>
     
-    <!-- Controls: Prev/Next buttons + dots -->
     <div class="controls">
+      <!-- for centering the navigation buttons -->
+      <button style="visibility: hidden;" class="report-btn" title="Report">&#9888;</button>
+      
+      <!-- Prev/Next buttons + dots -->
       <button id="prevBtn" aria-label="Previous page">&larr;</button>
       <div class="dots" id="dots"></div>
       <button id="nextBtn" aria-label="Next page">&rarr;</button>
+      
+      <!-- Report Button -->
+      <button class="report-btn" id="reportBtn" title="Report">&#9888;</button>
+    </div>
+    
+    <!-- Report Modal -->
+    <div class="report-modal hidden">
+      <div class="report-content">
+        <h3>Report</h3>
+        <select class="report-reason">
+          <option value="" disabled selected>Select Reason</option>
+          <option value="1">Copyright Infringement</option>
+          <option value="2">Privacy Violation</option>
+          <option value="3">Nudity or Sexual Content</option>
+          <option value="4">Violence or Graphic Content</option>
+          <option value="0">Other Reasons</option>
+        </select>
+        
+        <textarea placeholder="Comment (optional)" class="report-comment"></textarea>
+        
+        <div class="report-actions">
+          <button class="cancel-report">Cancel</button>
+          <button class="submit-report" disabled>Submit</button>
+        </div>
+      </div>
     </div>
     
     <script>
@@ -249,5 +278,56 @@
       
       </script>
       
+      <script>
+      const reasonSelect = document.querySelector('.report-reason');
+      const submitBtn = document.querySelector('.submit-report');
+      
+      // Enable or disable the submit button based on selected reason
+      reasonSelect.addEventListener('change', () => {
+        submitBtn.disabled = !reasonSelect.value;
+      });
+      
+      document.getElementById("reportBtn").addEventListener('click', () => {
+        document.querySelector('.report-modal').classList.remove('hidden');
+      });
+      
+      document.querySelector('.cancel-report').addEventListener('click', () => {
+        document.querySelector('.report-modal').classList.add('hidden');
+      });
+      
+      document.querySelector('.submit-report').addEventListener('click', () => {
+        const reason = document.querySelector('.report-reason').value;
+        const comment = document.querySelector('.report-comment').value;
+        const recordId = "<%= report_record_id %>";
+        
+        if (!reason) {
+          alert('Please select a reason.');
+          return;
+        }
+        document.querySelector('.report-modal').classList.add('hidden');
+        
+        // Send to server
+        fetch("https://getmona.app/api/report_live_photos", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ recordId, reason, comment })
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log("Server response:", data);
+        })
+        .catch(error => {
+          console.error("Error submitting report:", error);
+        });
+      });
+      </script>
     </body>
 </html>
+      
