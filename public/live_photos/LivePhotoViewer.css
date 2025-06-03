@@ -12,6 +12,7 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh; /* Ensures body fills the viewport */
+    height: 100dvh; /* Fix: dynamic viewport height accounts for the address bar of iOS Safari */
     
     user-select: none;
     -webkit-user-select: none;
