@@ -237,7 +237,7 @@
                 // console.log("player.renderedTime", player.renderedTime, "loadProgress", player.loadProgress.toString(), "canPlay", player.canPlay, "isPlaying", player.isPlaying);
                 player.play();
               }
-              videoDownloadButton.disabled = player.videoSrc == null;
+              videoDownloadButton.disabled = !records[i]["video"];
             }
             else if (player.isPlaying) {
               player.stop(); // reduce the chance of getting a once playable but no longer playable player
