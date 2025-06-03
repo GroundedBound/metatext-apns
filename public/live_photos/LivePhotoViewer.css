@@ -131,3 +131,125 @@ button:hover:not(:disabled) {
         transform: translate(-50%, -50%) rotate(360deg);
     }
 }
+
+.report-btn {
+    margin-right: auto; /* Push to left */
+    background: none;
+    font-size: 22px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.report-modal {
+    position: fixed;
+    top: 20px;
+    top: calc(env(safe-area-inset-top, 0px) + 20px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 400px;
+    background: #222;
+    border-radius: 12px;
+    padding: 20px;
+    color: white;
+    z-index: 100;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.6);
+}
+
+.hidden {
+    display: none;
+}
+
+.report-content h3 {
+    margin-top: 0;
+}
+
+.report-content select,
+.report-content textarea {
+    width: 100%;
+    margin: 10px 0;
+    padding: 8px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: none;
+    box-sizing: border-box;
+}
+
+.report-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.report-actions button {
+    padding: 6px 12px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+
+.cancel-report {
+    background: #555;
+    color: white;
+}
+
+.submit-report {
+    background: #d33;
+    color: white;
+}
+
+
+/* Action Menu */
+.menu-wrapper {
+    position: relative;
+    margin-left: auto; /* Push to right */
+}
+
+#menu-btn {
+    background: none;
+    color: white;
+    font-size: 20px;
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.menu {
+    position: absolute;
+    bottom: 100%;
+    right: 16px;
+    background: #333;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+    min-width: 200px;
+    overflow: hidden; /* Ensures hover bg doesn’t overspill rounded corners */
+    padding: 0; /* removes inner spacing */
+}
+
+.menu button {
+    all: unset; /* <—— Reset everything: removes default padding, border, background */
+    padding: 12px 16px;
+    width: 100%;
+    text-align: left;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.menu button:disabled {
+    opacity: 0.3;
+    cursor: default;
+}
+.menu button:hover:not(:disabled) {
+    background: #555;
+}
+
+.hidden {
+    display: none;
+}

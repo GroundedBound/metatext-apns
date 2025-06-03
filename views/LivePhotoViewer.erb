@@ -27,13 +27,12 @@
     <meta name="twitter:image:alt" content="Mona for Mastodon on the App Store">
     
     <link rel="stylesheet" href="LivePhotoViewer.css">
-    <link rel="stylesheet" href="ReportButton.css">
     <script src="https://cdn.apple-livephotoskit.com/lpk/1/livephotoskit.js"></script>
   </head>
   <body>
     
     <div class="controls">
-      <!-- for centering the navigation buttons -->
+      <!-- Report Button -->
       <button style="visibility: hidden;" class="report-btn" title="Report">&#9888;</button>
       
       <!-- Prev/Next buttons + dots -->
@@ -41,8 +40,15 @@
       <div class="dots" id="dots"></div>
       <button id="nextBtn" aria-label="Next page">&rarr;</button>
       
-      <!-- Report Button -->
-      <button class="report-btn" id="reportBtn" title="Report">&#9888;</button>
+      <!-- Menu Button -->
+      <div class="menu-wrapper">
+        <button id="menu-btn" title="Menu" aria-label="Menu" style="font-size: 24px;">⋯</button>
+        <div id="menu" class="menu hidden">
+          <button id="download-photo" class="menuItem">Download Photo</button>
+          <button id="download-video" class="menuItem">Download Video</button>
+          <button id="reportBtn" class="menuItem">Report a Concern…</button>
+        </div>
+      </div>
     </div>
     
     <!-- Report Modal -->
@@ -205,10 +211,14 @@
               const shouldPlay = autoplay && i === currentPage;
               const player = createPlayer(records[i], shouldPlay);
               page.appendChild(player);
-            } else if (autoplay && i === currentPage) {
-              // Already loaded; play it if possible
+            } else if (i === currentPage) {
               const player = page.querySelector('.player');
-              if (player?.play) player.play();
+              if (autoplay) {
+                if (player?.play) player.play();
+              } else if (player.isPlaying) {
+                player.stop();
+              }
+              document.getElementById("download-video").disabled = player.videoSrc == null;
             } else {
               const player = page.querySelector('.player');
               if (player.isPlaying) {
@@ -276,6 +286,60 @@
       loadVisiblePlayers(true);
       updateControls();
       
+      function getExtensionFromMime(mime) {
+        const mimeMap = {
+          'image/jpeg': 'jpg',
+          'image/png': 'png',
+          'image/gif': 'gif',
+          'image/webp': 'webp',
+          'video/mp4': 'mp4',
+          'video/webm': 'webm',
+          'video/quicktime': 'mov',
+          'application/pdf': 'pdf',
+          'text/plain': 'txt',
+          'application/zip': 'zip',
+          // Add more as needed
+        };
+        
+        return mimeMap[mime] || '';
+      }
+      async function startDownload(fileUrl, mime) {
+        const fileExtension = getExtensionFromMime(mime);
+        
+        try {
+          const response = await fetch(fileUrl);
+          const blob = await response.blob();
+          const objectUrl = URL.createObjectURL(blob);
+          
+          const a = document.createElement('a');
+          a.href = objectUrl;
+          a.download = 'MonaCloudPhoto.' + fileExtension; // force download filename
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          
+          URL.revokeObjectURL(objectUrl); // Clean up
+        } catch (err) {
+          console.error('Download failed:', err);
+        }
+      }
+      function download(type) {
+        const item = records[currentPage][type];
+        if (item) {
+          const fileUrl = item["downloadURL"];
+          const mime = item["MIME"];
+          startDownload(fileUrl, mime);
+        }
+      }
+      function configureDownloadButtons() {
+        document.getElementById('download-photo').addEventListener('click', async () => {
+          download("photo");
+        });
+        document.getElementById('download-video').addEventListener('click', async () => {
+          download("video");
+        });
+      }
+      configureDownloadButtons()
       </script>
       
       <script>
@@ -331,6 +395,28 @@
         })
         .catch(error => {
           console.error("Error submitting report:", error);
+        });
+      });
+      </script>
+      
+      <script>
+      const menuBtn = document.getElementById('menu-btn');
+      const menu = document.getElementById('menu');
+      
+      menuBtn.addEventListener('click', () => {
+        menu.classList.toggle('hidden');
+      });
+      
+      // hide menu when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!menu.contains(e.target) && !menuBtn.contains(e.target)) {
+          menu.classList.add('hidden');
+        }
+      });
+      
+      document.querySelectorAll('.menuItem').forEach(item => {
+        item.addEventListener('click', () => {
+          document.querySelector('.menu').classList.add('hidden');
         });
       });
       </script>
