@@ -2,7 +2,7 @@ html, body {
     margin: 0; padding: 0;
     height: 100%;
     background: black;
-    overflow: hidden; /* prevent vertical scroll */
+    overflow-y: hidden; /* prevent vertical scroll */
     font-family: sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -27,7 +27,8 @@ body {
 .carousel {
     flex: 1 1 auto;
     display: flex;
-    overflow: auto;
+    overflow-x: auto;
+    overflow-y: hidden;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
