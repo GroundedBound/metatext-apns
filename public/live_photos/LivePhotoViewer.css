@@ -11,6 +11,7 @@ html, body {
 body {
     display: flex;
     flex-direction: column;
+    height: 100vh; /* Ensures body fills the viewport */
     
     user-select: none;
     -webkit-user-select: none;
@@ -29,9 +30,9 @@ body {
     overflow: auto;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch; /* smooth scroll on iOS */
+    -webkit-overflow-scrolling: touch;
     width: 100vw;
-    scroll-padding: 0; /* snap to edge */
+    scroll-padding: 0;
 }
 
 /* Hide scrollbar */
@@ -62,6 +63,7 @@ body {
 
 /* Controls container */
 .controls {
+    flex-shrink: 0;
     display: flex;
     justify-content: center;
     align-items: center;
