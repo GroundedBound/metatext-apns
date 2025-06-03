@@ -109,11 +109,11 @@
       }
       
       // Function to create and return a LivePhotosKit player
-      function createPlayer(record) {
+      function createPlayer(record, shouldPlay = false) {
         const player = LivePhotosKit.createPlayer();
         player.className = 'player';
         player.showsNativeControls = false;
-        // player.proactivelyLoadsVideo = true;
+        player.proactivelyLoadsVideo = shouldPlay;
         
         const photoUrl = record.photo?.downloadURL;
         const videoUrl = record.video?.downloadURL;
@@ -140,6 +140,9 @@
             spinner.remove();
             if (videoUrl) {
               player.showsNativeControls = true;
+              if (shouldPlay) {
+                player.play();
+              }
             }
           });
           fetch(photoUrl).then(res => res.arrayBuffer()).then(buf => {
@@ -162,20 +165,22 @@
       }
       
       // Lazy load players only for currentPage and neighbors
-      function loadVisiblePlayers() {
+      function loadVisiblePlayers(autoplay) {
         for(let i=0; i<totalPages; i++) {
           const page = document.getElementById(`page${i+1}`);
           if(!page) continue;
           
           // Load only current page and neighbors
-          if(Math.abs(i - currentPage) <= 1) {
-            if(page.children.length === 0) {
-              const player = createPlayer(records[i]);
+          if (Math.abs(i - currentPage) <= 1) {
+            if (page.children.length === 0) {
+              const shouldPlay = autoplay && i === currentPage;
+              const player = createPlayer(records[i], shouldPlay);
               page.appendChild(player);
+            } else if (autoplay && i === currentPage) {
+              // Already loaded; play it if possible
+              const player = page.querySelector('.player');
+              if (player?.play) player.play();
             }
-          } else {
-            // Remove players not near current page to save memory
-            // while(page.firstChild) page.removeChild(page.firstChild);
           }
         }
       }
@@ -197,13 +202,13 @@
       }
       
       // Update currentPage based on scroll position
-      function onScroll() {
+      function onScroll(scrollingStopped) {
         const scrollLeft = carousel.scrollLeft;
         const pageWidth = window.innerWidth;
         const newPage = Math.round(scrollLeft / pageWidth);
-        if(newPage !== currentPage) {
+        if(newPage !== currentPage || scrollingStopped) {
           currentPage = newPage;
-          loadVisiblePlayers();
+          loadVisiblePlayers(scrollingStopped);
           updateControls();
         }
       }
@@ -216,10 +221,16 @@
         scrollToPage(currentPage + 1);
       });
       
+      let scrollTimeout;
+      
       // Listen to scroll events to update currentPage
       carousel.addEventListener('scroll', () => {
-        // debounce or throttle scroll for performance, but simple is fine here
-        onScroll();
+        onScroll(false);
+        
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+          onScroll(true); // update after scroll stops
+        }, 50); // wait 50ms after last scroll event
       });
       
       // Update on window resize to adjust scroll position exactly
@@ -228,7 +239,7 @@
       });
       
       // Initial load
-      loadVisiblePlayers();
+      loadVisiblePlayers(true);
       updateControls();
       
       </script>
