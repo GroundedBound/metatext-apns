@@ -65,6 +65,14 @@ def parse_photo_record(record)
     mimes = fields.dig("MIMEs", "value")
     files = fields.dig("files", "value")
     
+    thumbnail_mime = fields.dig("thumbnailMIME", "value")
+    thumbnail = fields.dig("thumbnail", "value")
+    
+    if thumbnail_mime && thumbnail && !mimes.empty? && !files.empty?
+        mimes[0] = thumbnail_mime
+        files[0] = thumbnail
+    end
+    
     results = []
     
     files.each_with_index do |file, index|
