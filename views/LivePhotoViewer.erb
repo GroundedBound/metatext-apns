@@ -49,7 +49,7 @@
     <div class="report-modal hidden">
       <div class="report-content">
         <h3>Report</h3>
-        <select class="report-reason">
+        <select class="report-reason" id="report-reason">
           <option value="" disabled selected>Select Reason</option>
           <option value="1">Copyright Infringement</option>
           <option value="2">Privacy Violation</option>
@@ -58,7 +58,7 @@
           <option value="0">Other Reasons</option>
         </select>
         
-        <textarea placeholder="Comment (optional)" class="report-comment"></textarea>
+        <textarea placeholder="Comment (optional)" class="report-comment" id="report-comment"></textarea>
         
         <div class="report-actions">
           <button class="cancel-report">Cancel</button>
@@ -279,12 +279,12 @@
       </script>
       
       <script>
-      const reasonSelect = document.querySelector('.report-reason');
-      const submitBtn = document.querySelector('.submit-report');
+      const reasonSelect = document.getElementById('report-reason');
+      const submitButton = document.querySelector('.submit-report');
       
       // Enable or disable the submit button based on selected reason
       reasonSelect.addEventListener('change', () => {
-        submitBtn.disabled = !reasonSelect.value;
+        submitButton.disabled = !reasonSelect.value;
       });
       
       document.getElementById("reportBtn").addEventListener('click', () => {
@@ -296,14 +296,20 @@
       });
       
       document.querySelector('.submit-report').addEventListener('click', () => {
-        const reason = document.querySelector('.report-reason').value;
-        const comment = document.querySelector('.report-comment').value;
+        const commentButton = document.getElementById('report-comment');
+        
+        const reason = reasonSelect?.value;
+        const comment = commentButton?.value;
         const recordId = "<%= report_record_id %>";
         
         if (!reason) {
           alert('Please select a reason.');
           return;
         }
+        reasonSelect.value = '';
+        commentButton.value = '';
+        submitButton.disabled = true;
+        
         document.querySelector('.report-modal').classList.add('hidden');
         
         // Send to server
