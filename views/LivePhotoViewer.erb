@@ -144,12 +144,13 @@
       }
       
       // Function to create and return a LivePhotosKit player
-      function createPlayer(record, shouldPlay = false) {
+      function createPlayer(index, shouldPlay = false) {
         const player = LivePhotosKit.createPlayer();
         player.className = 'player';
         player.showsNativeControls = false;
         player.proactivelyLoadsVideo = shouldPlay;
         
+        const record = records[index];
         const photoUrl = record.photo?.downloadURL;
         const videoUrl = record.video?.downloadURL;
         
@@ -157,22 +158,33 @@
         player.videoMimeType = record.video?.MIME;
         
         if (photoUrl) {
-          const spinner = document.createElement('div');
-          spinner.id = 'loading-spinner';
-          spinner.className = 'spinner';
-          player.kjy_spinner = spinner;
-          player.appendChild(spinner);
+          let needsSpinner = true;
+          let spinner = null;
+          
+          setTimeout(() => {
+            if (!needsSpinner) {
+              return;
+            }
+            spinner = document.createElement('div');
+            spinner.id = 'loading-spinner';
+            spinner.className = 'spinner';
+            player.appendChild(spinner);
+          }, 500); // 0.5s delay
           
           player.addEventListener('error', (ev) => {
+            needsSpinner = false;
+            spinner?.remove();
+            
             const message = getErrorMessage(ev);
             const label = makeErrorLabel(message);
-            spinner.remove();
             player.kjy_errorLabel?.remove();
             player.kjy_errorLabel = label;
             player.appendChild(label);
           })
           player.addEventListener('photoload', evt => {
-            spinner.remove();
+            needsSpinner = false;
+            spinner?.remove();
+            
             if (videoUrl) {
               player.showsNativeControls = true;
               if (shouldPlay) {
@@ -188,42 +200,47 @@
           fetch(videoUrl).then(res => res.arrayBuffer()).then(buf => {
             player.videoSrc = buf;
           });
-          // let playedOnce = false
-          // player.addEventListener('canplay', evt => {
-          //   if (!playedOnce) {
-          //     playedOnce = true;
-          //     player.play()
-          //   }
-          // });
+          player.addEventListener('canplay', evt => {
+            player.kjy_oncePlayable = true;
+          });
         }
         return player;
       }
       
       // Lazy load players only for currentPage and neighbors
       function loadVisiblePlayers(autoplay) {
+        const videoDownloadButton = document.getElementById("download-video");
+        
         for(let i=0; i<totalPages; i++) {
           const page = document.getElementById(`page${i+1}`);
           if(!page) continue;
           
           // Load only current page and neighbors
           if (Math.abs(i - currentPage) <= 1) {
-            if (page.children.length === 0) {
-              const shouldPlay = autoplay && i === currentPage;
-              const player = createPlayer(records[i], shouldPlay);
-              page.appendChild(player);
-            } else if (i === currentPage) {
-              const player = page.querySelector('.player');
+            const player = page.kjy_player;
+            const shouldPlay = autoplay && i === currentPage;
+            
+            if (!player || shouldPlay && player.kjy_oncePlayable && !player.canPlay) {
+              if (player) {
+                // console.log("Apple bug workaround: once playable but no longer playable player");
+                setTimeout(() => {
+                  player.remove(); // avoid black flash
+                }, 100);
+                videoDownloadButton.disabled = false;
+              }
+              const newPlayer = createPlayer(i, shouldPlay);
+              page.appendChild(newPlayer);
+              page.kjy_player = newPlayer;
+            }
+            else if (i === currentPage) {
               if (autoplay) {
-                if (player?.play) player.play();
-              } else if (player.isPlaying) {
-                player.stop();
+                // console.log("player.renderedTime", player.renderedTime, "loadProgress", player.loadProgress.toString(), "canPlay", player.canPlay, "isPlaying", player.isPlaying);
+                player.play();
               }
-              document.getElementById("download-video").disabled = player.videoSrc == null;
-            } else {
-              const player = page.querySelector('.player');
-              if (player.isPlaying) {
-                player.stop();
-              }
+              videoDownloadButton.disabled = player.videoSrc == null;
+            }
+            else if (player.isPlaying) {
+              player.stop(); // reduce the chance of getting a once playable but no longer playable player
             }
           }
         }
