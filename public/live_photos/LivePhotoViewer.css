@@ -131,16 +131,6 @@ button:hover:not(:disabled) {
     }
 }
 
-.report-btn {
-    margin-right: auto; /* Push to left */
-    background: none;
-    font-size: 22px;
-    color: white;
-    border: none;
-    cursor: pointer;
-    padding: 5px;
-}
-
 .report-modal {
     position: fixed;
     top: 20px;
@@ -207,7 +197,7 @@ button:hover:not(:disabled) {
     margin-left: auto; /* Push to right */
 }
 
-#menu-btn {
+.menu-btn {
     background: none;
     color: white;
     font-size: 20px;

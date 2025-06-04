@@ -32,8 +32,10 @@
   <body>
     
     <div class="controls">
-      <!-- Report Button -->
-      <button style="visibility: hidden;" class="report-btn" title="Report">&#9888;</button>
+      <!-- Placeholder Menu Button -->
+      <div style="visibility: hidden;" class="menu-wrapper">
+        <button class="menu-btn" title="Menu" aria-label="Menu" style="font-size: 24px;">⋯</button>
+      </div>
       
       <!-- Prev/Next buttons + dots -->
       <button id="prevBtn" aria-label="Previous page">&larr;</button>
@@ -42,7 +44,7 @@
       
       <!-- Menu Button -->
       <div class="menu-wrapper">
-        <button id="menu-btn" title="Menu" aria-label="Menu" style="font-size: 24px;">⋯</button>
+        <button id="menu-btn" class="menu-btn" title="Menu" aria-label="Menu" style="font-size: 24px;">⋯</button>
         <div id="menu" class="menu hidden">
           <button id="download-photo" class="menuItem">Download Photo</button>
           <button id="download-video" class="menuItem">Download Video</button>
