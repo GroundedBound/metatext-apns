@@ -48,8 +48,8 @@ body {
 /* Each page fills viewport */
 .page {
     scroll-snap-align: start;
-    flex: 0 0 auto;
-    width: calc(100dvw - env(safe-area-inset-left) - env(safe-area-inset-right));
+    flex: 0 0 100vw;
+    flex: 0 0 100dvw;
     
     position: relative;
     background: black;
