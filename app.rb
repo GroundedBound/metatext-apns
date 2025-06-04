@@ -36,46 +36,61 @@ CONNECTION_POOL =
 
 post '/push/:app_id/:device_token/:user_id' do
   request.body.rewind
-
+  body_data = request.body.read
+  
+  content_encoding = request.env['HTTP_CONTENT_ENCODING'] || 'aesgcm'
+  
+  salt = nil
+  dh = nil
+  encoded_payload = nil
+  
+  if content_encoding == 'aes128gcm'
+    # AES128GCM payload structure:
+    # [salt (16)][rs (4)][sender pubkey (65)][ciphertext+tag]
+    raw = body_data.b
+    salt = raw[0...16]
+    rs = raw[16...20]                  # usually 4096 (not used here)
+    dh = raw[20...85]                  # 65-byte uncompressed EC public key
+    ciphertext = raw[85..]
+    
+    encoded_payload = {
+      i: params[:user_id],
+      m: Base64.urlsafe_encode64(ciphertext),
+      s: Base64.urlsafe_encode64(salt),
+      k: Base64.urlsafe_encode64(dh),
+      e: 'aesgcm'
+    }
+  else
+    salt = request.env['HTTP_ENCRYPTION'].to_s.split('salt=').last&.split(';')&.first
+    dh   = request.env['HTTP_CRYPTO_KEY'].to_s.split('dh=').last&.split(';')&.first
+    encoded_payload = {
+      i: params[:user_id],
+      m: Base64.urlsafe_encode64(body_data),
+      s: salt,
+      k: dh,
+      e: 'aesgcm'
+    }
+  end
+  
   notification = Apnotic::Notification.new(params[:device_token])
-
   notification.topic = params[:app_id]
   notification.alert = { 'loc-key' => 'apns-default-message' }
   notification.mutable_content = true
   notification.interruption_level = "passive"
-
-  if params[:fullenv] == 'true'
-    notification.custom_payload = {
-       i: params[:user_id],
-       m: Base64.urlsafe_encode64(request.body.read),
-       s: request.env['HTTP_ENCRYPTION'],
-       k: request.env['HTTP_CRYPTO_KEY']
-     }
-  else
-    notification.custom_payload = {
-       i: params[:user_id],
-       m: Base64.urlsafe_encode64(request.body.read),
-       s: request.env['HTTP_ENCRYPTION'].split('salt=').last.split(';').first,
-       k: request.env['HTTP_CRYPTO_KEY'].split('dh=').last.split(';').first
-     }
-  end
-
+  notification.custom_payload = encoded_payload
+  
   if params[:sandbox] == 'true'
     push = SANDBOX_CONNECTION.prepare_push(notification)
-
     push.on(:response) { |r| puts "Bad response (sandbox): #{r.inspect}" unless r.ok? }
-
     SANDBOX_CONNECTION.push_async(push)
   else
     CONNECTION_POOL.with do |connection|
       push = connection.prepare_push(notification)
-
       push.on(:response) { |r| puts "Bad response: #{r.inspect}" unless r.ok? }
-
       connection.push_async(push)
     end
   end
-
+  
   202
 end
 
