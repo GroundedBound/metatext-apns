@@ -14,7 +14,6 @@ body {
     height: 100vh; /* Ensures body fills the viewport */
     height: 100dvh; /* Fix: dynamic viewport height accounts for the address bar of iOS Safari */
     width: 100vw;
-    width: 100dvw;
     
     user-select: none;
     -webkit-user-select: none;
@@ -52,10 +51,6 @@ body {
     scroll-snap-align: start;
     flex: 0 0 100vw;
     flex: 0 0 100dvw;
-    
-    padding-left: calc(0px - env(safe-area-inset-left));
-    padding-right: calc(0px - env(safe-area-inset-right));
-    box-sizing: border-box;
     
     position: relative;
     background: black;
