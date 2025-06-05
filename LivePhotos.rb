@@ -8,7 +8,8 @@ CK_API_TOKEN_DEVELOPMENT = ENV['CK_API_TOKEN_DEVELOPMENT']
 CK_API_TOKEN_PRODUCTION = ENV['CK_API_TOKEN_PRODUCTION']
 CK_ASSET_DOWNLOAD_SIZE_LIMIT = Integer(ENV['CK_ASSET_DOWNLOAD_SIZE_LIMIT']) rescue 30_000_000 # 30MB
 
-MAIL_USERNAME = ENV['MAIL_USERNAME']
+MAIL_USERNAME_SENDER = ENV['MAIL_USERNAME_SENDER']
+MAIL_USERNAME_RECEIVER = ENV['MAIL_USERNAME_RECEIVER']
 MAIL_PASSWORD = ENV['MAIL_PASSWORD']
 
 class CloudKitClient
@@ -166,7 +167,7 @@ def send_mail(subject, body)
         delivery_method :smtp, {
             address: 'smtp.gmail.com',
             port: 587,
-            user_name: MAIL_USERNAME,
+            user_name: MAIL_USERNAME_SENDER,
             password: MAIL_PASSWORD, # Not your main password—use App Passwords
             authentication: 'plain',
             enable_starttls_auto: true
@@ -174,8 +175,8 @@ def send_mail(subject, body)
     end
     
     Mail.deliver do
-        from     'jykuang999@gmail.com'
-        to       'auroradictionary@gmail.com'
+        from     MAIL_USERNAME_SENDER
+        to       MAIL_USERNAME_RECEIVER
         subject  subject
         body     body
     end
