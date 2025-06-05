@@ -1,11 +1,15 @@
 require 'sinatra'
 require 'httparty'
 require 'json'
+require 'mail'
 
 CK_ENVIRONMENT = ENV['CK_ENVIRONMENT'] || 'development' # development production
 CK_API_TOKEN_DEVELOPMENT = ENV['CK_API_TOKEN_DEVELOPMENT']
 CK_API_TOKEN_PRODUCTION = ENV['CK_API_TOKEN_PRODUCTION']
 CK_ASSET_DOWNLOAD_SIZE_LIMIT = Integer(ENV['CK_ASSET_DOWNLOAD_SIZE_LIMIT']) rescue 30_000_000 # 30MB
+
+MAIL_USERNAME = ENV['MAIL_USERNAME']
+MAIL_PASSWORD = ENV['MAIL_PASSWORD']
 
 class CloudKitClient
     def initialize(environment = CK_ENVIRONMENT)
@@ -157,6 +161,37 @@ get '/live_photos/' do
     "Invalid URL"
 end
 
+def send_mail(subject, body)
+    Mail.defaults do
+        delivery_method :smtp, {
+            address: 'smtp.gmail.com',
+            port: 587,
+            user_name: MAIL_USERNAME,
+            password: MAIL_PASSWORD, # Not your main password—use App Passwords
+            authentication: 'plain',
+            enable_starttls_auto: true
+        }
+    end
+    
+    Mail.deliver do
+        from     'jykuang999@gmail.com'
+        to       'auroradictionary@gmail.com'
+        subject  subject
+        body     body
+    end
+end
+
+def reason_string(code)
+    reasons = {
+        "1" => "Copyright Infringement",
+        "2" => "Privacy Violation",
+        "3" => "Nudity or Sexual Content",
+        "4" => "Violence or Graphic Content",
+        "0" => "Other Reasons"
+    }
+    reasons[code.to_s] || "Unknown Reason"
+end
+
 post '/api/report_live_photos' do
     content_type :json
     
@@ -174,10 +209,11 @@ post '/api/report_live_photos' do
             return { error: "recordId and reason are required." }.to_json
         end
         
-        # Here you can store the report in a database or log it
-        puts "Received report: record_id=#{record_id}, reason=#{reason}, comment=#{comment}"
+        reason_s = reason_string(reason)
+        ck_url = "https://icloud.developer.apple.com/dashboard/database/teams/FF973S8UP2/containers/iCloud.com.jonny.live-photos/environments/PRODUCTION/records?using=queryRecords&database=public&zone=_defaultZone&recordType=PhotoCollection&filters%5B0%5D.fieldName=___recordID&filters%5B0%5D.type=EQUALS&filters%5B0%5D.fieldValue.type=referenceType&filters%5B0%5D.fieldValue.value=#{record_id}&recordName=#{record_id}"
         
-        # Return success response
+        send_mail("Report a Concern: Live Photos", "#{reason_s}\n\nhttps://getmona.app/live_photos/#{record_id}\n\n#{ck_url}\n\n#{comment}")
+        
         status 200
         { message: "Report received." }.to_json
         

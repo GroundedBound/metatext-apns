@@ -9,6 +9,7 @@ gem 'puma', '~> 6.0.0'
 gem 'sinatra', '~> 3.0.3'
 gem 'httparty', '~> 0.23.1'
 gem 'json', '~> 2.12.2'
+gem 'mail', '~> 2.8', '>= 2.8.1'
 
 group 'development' do
   gem 'rubocop', '~> 1.38.0', require: false
