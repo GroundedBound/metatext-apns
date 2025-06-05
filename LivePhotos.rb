@@ -189,7 +189,7 @@ def reason_string(code)
         "4" => "Violence or Graphic Content",
         "0" => "Other Reasons"
     }
-    reasons[code.to_s] || "Unknown Reason"
+    reasons[code.to_s] || code.to_s
 end
 
 post '/api/report_live_photos' do
