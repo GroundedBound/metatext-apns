@@ -48,12 +48,12 @@ post '/push/:app_id/:device_token/:user_id' do
     # AES128GCM payload structure:
     # [salt (16)][rs (4)][sender pubkey (65)][ciphertext+tag]
     raw = body_data.b
-    if raw.bytesize < 85
+    if raw.bytesize < 87
         halt 400, 'Malformed payload'
     end
     salt = Base64.urlsafe_encode64(raw[0...16])
-    dh = Base64.urlsafe_encode64(raw[20...85]) # 65-byte uncompressed EC public key
-    ciphertext = Base64.urlsafe_encode64(raw[85..])
+    dh = Base64.urlsafe_encode64(raw[21...86]) # 65-byte uncompressed EC public key
+    ciphertext = Base64.urlsafe_encode64(raw[86..])
   else
     salt = request.env['HTTP_ENCRYPTION'].to_s.split('salt=').last&.split(';')&.first
     dh = request.env['HTTP_CRYPTO_KEY'].to_s.split('dh=').last&.split(';')&.first
