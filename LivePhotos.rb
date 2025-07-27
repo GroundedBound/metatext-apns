@@ -156,7 +156,7 @@ def show_rich_text(id, environment)
     client = CloudKitClient.new(environment || CK_ENVIRONMENT)
     record = client.lookup_rich_text_record(CGI.escape(id) + "-RichText")
     
-    return nil unless record.is_a?(Hash)
+    return record unless record.is_a?(Hash)
     
     fields = record["fields"]
     version = fields.dig("version", "value")
@@ -201,6 +201,12 @@ get '/rich_text/:id' do
     return "Invalid URL" if id.nil? || id.empty?
     
     html = show_rich_text(id, params[:environment])
+    
+    if html.is_a?(Integer)
+        status html
+        content_type :text
+        return "Server error #{html}"
+    end
     
     if html.nil?
         status 404
