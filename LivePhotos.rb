@@ -156,7 +156,7 @@ def show_rich_text(id, environment)
     client = CloudKitClient.new(environment || CK_ENVIRONMENT)
     record = client.lookup_rich_text_record(CGI.escape(id) + "-RichText")
     
-    return nil unless records.is_a?(Hash)
+    return nil unless record.is_a?(Hash)
     
     fields = record["fields"]
     version = fields.dig("version", "value")
