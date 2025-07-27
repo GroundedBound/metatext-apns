@@ -55,7 +55,7 @@ class CloudKitClient
     def lookup_rich_text_record(name)
         return nil if name.nil? || name.empty?
         
-        response = lookup_records([name], desiredKeys: ["html", "version"])
+        response = lookup_records([name], ["html", "version"])
         
         unless response.success?
             return response.code
