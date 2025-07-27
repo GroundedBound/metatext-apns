@@ -17,7 +17,7 @@ class CloudKitClient
         @environment = environment
     end
     
-    def lookup_records(record_names)
+    def lookup_records(record_names, desiredKeys = nil)
         unless record_names.is_a?(Array) && record_names.all? { |r| r.is_a?(String) } && !record_names.empty?
             raise ArgumentError, "record_names must be a non-empty array of strings"
         end
@@ -29,6 +29,8 @@ class CloudKitClient
             zoneID: { zoneName: "_defaultZone" },
             records: record_names.map { |name| { recordName: name } }
         }
+        request_body[:desiredKeys] = desiredKeys if desiredKeys
+        
         HTTParty.post(url, headers: { 'Content-Type' => 'application/json' }, body: request_body.to_json)
     end
     
@@ -50,6 +52,24 @@ class CloudKitClient
         end
     end
     
+    def lookup_rich_text_record(name)
+        return nil if name.nil? || name.empty?
+        
+        response = lookup_records([name], desiredKeys: ["html", "version"])
+        
+        unless response.success?
+            return response.code
+        end
+        
+        begin
+            data = JSON.parse(response.body)
+            records = data["records"] || []
+            records.first
+        rescue JSON::ParserError
+            500
+        end
+    end
+    
     def fetch_photo_record_names(id)
         return nil unless id
         response = lookup_records([CGI.escape(id)])
@@ -58,7 +78,7 @@ class CloudKitClient
         begin
             json = JSON.parse(response.body)
             json["records"]&.first&.dig("fields", "photoRecordNames", "value")
-            rescue JSON::ParserError => e
+        rescue JSON::ParserError => e
             nil
         end
     end
@@ -132,6 +152,20 @@ def show_live_photos(id, environment)
     structured_records.to_json
 end
 
+def show_rich_text(id, environment)
+    client = CloudKitClient.new(environment || CK_ENVIRONMENT)
+    record = client.lookup_rich_text_record(CGI.escape(id) + "-RichText")
+    
+    return nil unless records.is_a?(Hash)
+    
+    fields = record["fields"]
+    version = fields.dig("version", "value")
+    html = fields.dig("html", "value")
+    
+    return nil unless version == 1
+    return html
+end
+
 get '/live_photos/:id' do
     id = params[:id]
     return "Invalid URL" if id.nil? || id.empty?
@@ -159,6 +193,30 @@ get '/live_photos' do
 end
 
 get '/live_photos/' do
+    "Invalid URL"
+end
+
+get '/rich_text/:id' do
+    id = params[:id]
+    return "Invalid URL" if id.nil? || id.empty?
+    
+    html = show_rich_text(id, params[:environment])
+    
+    if html.nil?
+        status 404
+        content_type :text
+        return "This content has been deleted or doesn't exist"
+    end
+    
+    content_type :html
+    html
+end
+
+get '/rich_text' do
+    "Invalid URL"
+end
+
+get '/rich_text/' do
     "Invalid URL"
 end
 
