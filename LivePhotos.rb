@@ -159,6 +159,8 @@ def show_rich_text(id, environment)
     return record unless record.is_a?(Hash)
     
     fields = record["fields"]
+    return nil if fields.nil?
+    
     version = fields.dig("version", "value")
     html = fields.dig("html", "value")
     
