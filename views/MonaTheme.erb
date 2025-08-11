@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mona Custom App Theme</title>
+    <link rel="me" href="https://mastodon.social/@jonny_kuang">
+    <link rel="me" href="https://mastodon.social/@monaapp">
+    
+    <meta property="og:title" content="‎Mona Custom App Theme">
+    <meta property="og:description" content="‎Download custom app themes of the Mona app.">
+    <meta property="og:site_name" content="Mona Custom App Theme">
+    <meta property="og:url" content="<%= og_url %>">
+    <meta property="og:image" content="https://getmona.app/link_preview/link_preview_2.png">
+    <meta property="og:image:alt" content="Mona for Mastodon on the App Store">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:secure_url" content="https://getmona.app/link_preview/link_preview_2.png">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_US">
+
+    <meta name="twitter:title" content="Mona Custom App Theme">
+    <meta name="twitter:description" content="‎Download custom app themes of the Mona app.">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://getmona.app/link_preview/link_preview_2.png">
+    <meta name="twitter:image:alt" content="Mona for Mastodon on the App Store">
+
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* Center the content */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            padding: 20px; /* Ensures some space on very small screens */
+        }
+        
+        /* Center container */
+        .center-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            max-width: 100%; /* Ensures content does not overflow horizontally */
+        }
+        
+        /* App icon */
+        .app-icon {
+            width: 160px;
+            height: 160px;
+            margin-bottom: 20px;
+        }
+        
+        /* Label text */
+        .label-text {
+            font: -apple-system-headline;
+            font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 1.25em; /* Scales the font to 1.25 times the base size */
+            margin: 20px 0; /* Equal spacing above and below */
+            text-align: center; /* Ensures the text is aligned properly */
+        }
+        
+        /* App Store button */
+        .app-store-button img {
+            width: 120px;
+            height: 40px;
+            margin-top: 20px;
+        }
+        
+        /* Link styling */
+        .label-text a {
+            color: #007AFF;
+        }
+        
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #121212;
+                color: #ffffff;
+            }
+            
+            /* Use dark mode button */
+            .app-store-button img {
+                content: url('../home/Download_on_the_App_Store_Badge_White.svg');
+            }
+            
+            .label-text a {
+                color: #0A84FF;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="center-container">
+        <!-- Clickable App Icon -->
+        <a href="https://geo.itunes.apple.com/app/id1659154653">
+            <img class="app-icon" src="../home/appicon.webp" alt="Mona for Mastodon">
+        </a>
+            
+        <!-- Text Label with Link -->
+        <p class="label-text">
+        <a href="<%= app_url %>">Open Mona</a> to preview and apply this custom app theme
+        </p>
+
+        <!-- Download on the App Store Badge -->
+        <a href="https://geo.itunes.apple.com/app/id1659154653" class="app-store-button">
+            <img src="../home/Download_on_the_App_Store_Badge_Black.svg" alt="Download on the App Store">
+        </a>
+    </div>
+
+    <script type="text/javascript">
+        window.location.href = "<%= app_url %>";
+    </script>
+</body>
+</html>
