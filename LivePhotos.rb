@@ -168,12 +168,13 @@ def show_rich_text(id, environment)
     return html
 end
 
-get '/theme/:id' do
-    id = params[:id]
-    return "Invalid URL" if id.nil? || id.empty?
+get '/theme' do
+    url_string = params[:url]
+    return "Invalid URL" if url_string.nil? || url_string.empty?
+    return "Invalid URL" unless url_string.start_with?("mona-cat://") || url_string.start_with?("spring-cat://")
     
     erb :MonaTheme, locals: {
-        app_url: "mona-cat://#{CGI.escape(id)}",
+        app_url: CGI.escape(url_string),
         og_url: request.url
     }
 end
