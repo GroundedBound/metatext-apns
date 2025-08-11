@@ -174,7 +174,7 @@ get '/theme' do
     return "Invalid URL" unless url_string.start_with?("mona-cat://") || url_string.start_with?("spring-cat://")
     
     erb :MonaTheme, locals: {
-        app_url: CGI.escape(url_string),
+        app_url: url_string,
         og_url: request.url
     }
 end
