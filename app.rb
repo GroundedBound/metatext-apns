@@ -65,6 +65,8 @@ post '/push/:app_id/:device_token/:user_id' do
   notification.alert = { 'loc-key' => 'apns-default-message' }
   notification.mutable_content = true
   notification.interruption_level = "passive"
+  notification.target_content_id = "notification"
+  notification.badge = 1
   
   notification.custom_payload = {
     i: params[:user_id],
