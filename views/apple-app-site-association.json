@@ -3,6 +3,22 @@
         "details": [
             {
                 "appIDs": [
+                    "FF973S8UP2.com.jonny.supermona"
+                ],
+                "components": [
+                    {
+                        "/": "/open/com.jonny.supermona"
+                    },
+                    {
+                        "/": "/live_photos/*"
+                    },
+                    {
+                        "/": "/theme"
+                    }
+                ]
+            },
+            {
+                "appIDs": [
                     "FF973S8UP2.com.jonny.mona"
                 ],
                 "components": [
@@ -37,6 +53,7 @@
     },
     "webcredentials": {
         "apps": [
+            "FF973S8UP2.com.jonny.supermona",
             "FF973S8UP2.com.jonny.mona",
             "FF973S8UP2.com.jonny.monabeta"
         ]
