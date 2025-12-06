@@ -3,7 +3,7 @@
 require 'apnotic'
 require 'base64'
 require 'sinatra'
-require 'maxminddb'
+#require 'maxminddb'
 
 configure :production do
     set :show_exceptions, true
