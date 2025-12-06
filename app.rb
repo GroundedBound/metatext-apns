@@ -3,7 +3,7 @@
 require 'apnotic'
 require 'base64'
 require 'sinatra'
-#require 'maxminddb'
+require 'maxminddb'
 
 configure :production do
     set :show_exceptions, true
@@ -35,7 +35,7 @@ CONNECTION_POOL =
     connection.on(:error) { |e| puts "Connection error: #{e}" }
   end
 
-#MaxMind = MaxMindDB.new(File.join(settings.root, "config", "GeoLite2-Country.mmdb"))
+MaxMind = MaxMindDB.new(File.join(settings.root, "config", "GeoLite2-Country.mmdb"))
 
 post '/push/:app_id/:device_token/:user_id' do
   request.body.rewind
