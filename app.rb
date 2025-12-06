@@ -3,6 +3,7 @@
 require 'apnotic'
 require 'base64'
 require 'sinatra'
+require 'maxminddb'
 
 configure :production do
     set :show_exceptions, true
@@ -33,6 +34,9 @@ CONNECTION_POOL =
   ) do |connection|
     connection.on(:error) { |e| puts "Connection error: #{e}" }
   end
+
+set :geo, File.expand_path('../geo', __FILE__)
+MaxMind = MaxMindDB.new(File.join(settings.geo, "GeoLite2-Country.mmdb"))
 
 post '/push/:app_id/:device_token/:user_id' do
   request.body.rewind
@@ -124,16 +128,36 @@ get '/open/:app_id' do
     end
 end
 
+def ip_in_japan?(ip)
+    return false if ip.nil? || ip.start_with?("127.", "10.", "192.168.", "172.16")
+    
+    result = MaxMind.lookup(ip)
+    result.found? && result.country&.iso_code == "JP"
+end
+
 get '/' do
-    erb :DownloadMona, { :locals => {
-        :auto_redirect => "true",
-    }}
+  ip = request.ip
+  
+  erb :DownloadMona, locals: {
+    auto_redirect: true,
+    app_id: ip_in_japan?(ip) ? "1659154653" : "6755672518"
+  }
 end
 
 get '/home' do
-    erb :DownloadMona, { :locals => {
-        :auto_redirect => "false",
-    }}
+    ip = request.ip
+    
+    erb :DownloadMona, locals: {
+      auto_redirect: false,
+      app_id: ip_in_japan?(ip) ? "1659154653" : "6755672518"
+    }
+end
+
+get '/newhome' do
+    erb :DownloadMona, locals: {
+      auto_redirect: false,
+      app_id: "6755672518"
+    }
 end
 
 get '/redirect' do
