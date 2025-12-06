@@ -29,7 +29,7 @@
     
     <script type="text/javascript">
         if (<%= auto_redirect %>) {
-            window.location.href = "https://geo.itunes.apple.com/app/id1659154653";
+            window.location.href = "https://geo.itunes.apple.com/app/id<%= app_id %>";
         }
     </script>
     <style>
@@ -91,12 +91,12 @@
 <body>
     <div class="center-container">
         <!-- Clickable App Icon -->
-        <a href="https://geo.itunes.apple.com/app/id1659154653">
+        <a href="https://geo.itunes.apple.com/app/id<%= app_id %>">
             <img class="app-icon" src="home/appicon.webp" alt="Mona for Mastodon">
         </a>
 
         <!-- Download on the App Store Badge -->
-        <a href="https://geo.itunes.apple.com/app/id1659154653" class="app-store-button">
+        <a href="https://geo.itunes.apple.com/app/id<%= app_id %>" class="app-store-button">
             <img src="home/Download_on_the_App_Store_Badge_Black.svg" alt="Download on the App Store">
         </a>
     </div>

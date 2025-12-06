@@ -128,27 +128,36 @@ get '/open/:app_id' do
     end
 end
 
+def ip_in_japan?(ip)
+    return false if ip.nil? || ip.start_with?("127.", "10.", "192.168.", "172.16")
+    
+    result = MaxMind.lookup(ip)
+    result.found? && result.country&.iso_code == "JP"
+end
+
 get '/' do
-    erb :DownloadMona, { :locals => {
-        :auto_redirect => "true",
-    }}
+  ip = request.ip
+  
+  erb :DownloadMona, locals: {
+    auto_redirect: true,
+    app_id: ip_in_japan?(ip) ? "1659154653" : "6755672518"
+  }
 end
 
 get '/home' do
-    erb :DownloadMona, { :locals => {
-        :auto_redirect => "false",
-    }}
+    ip = request.ip
+    
+    erb :DownloadMona, locals: {
+      auto_redirect: false,
+      app_id: ip_in_japan?(ip) ? "1659154653" : "6755672518"
+    }
 end
 
 get '/newhome' do
-    ip = request.ip
-    result = MaxMind.lookup(ip)
-    
-    if result.found? && result.country.iso_code == "JP"
-        "411"
-    else
-        "412"
-    end
+    erb :DownloadMona, locals: {
+      auto_redirect: false,
+      app_id: "6755672518"
+    }
 end
 
 get '/redirect' do
