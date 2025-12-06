@@ -3,6 +3,7 @@
 require 'apnotic'
 require 'base64'
 require 'sinatra'
+require "maxminddb"
 
 configure :production do
     set :show_exceptions, true
@@ -33,6 +34,8 @@ CONNECTION_POOL =
   ) do |connection|
     connection.on(:error) { |e| puts "Connection error: #{e}" }
   end
+
+MaxMind = MaxMindDB.new(File.join(settings.root, "config", "GeoLite2-Country.mmdb"))
 
 post '/push/:app_id/:device_token/:user_id' do
   request.body.rewind
@@ -134,6 +137,17 @@ get '/home' do
     erb :DownloadMona, { :locals => {
         :auto_redirect => "false",
     }}
+end
+
+get '/newhome' do
+    ip = request.ip
+    result = MaxMind.lookup(ip)
+    
+    if result.found? && result.country.iso_code == "JP"
+        "411"
+    else
+        "412"
+    end
 end
 
 get '/redirect' do

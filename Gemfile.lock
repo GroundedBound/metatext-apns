@@ -21,6 +21,7 @@ GEM
       net-imap
       net-pop
       net-smtp
+    maxminddb (0.1.22)
     mini_mime (1.1.5)
     multi_xml (0.7.2)
       bigdecimal (~> 3.1)
@@ -86,6 +87,7 @@ DEPENDENCIES
   httparty (~> 0.23.1)
   json (~> 2.12.2)
   mail (~> 2.8, >= 2.8.1)
+  maxminddb
   puma (~> 6.0.0)
   rubocop (~> 1.38.0)
   sinatra (~> 3.0.3)
