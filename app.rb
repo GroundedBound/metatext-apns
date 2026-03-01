@@ -103,6 +103,10 @@ get '/.well-known/apple-app-site-association' do
     send_file 'views/apple-app-site-association.json'
 end
 
+get '/api/mona/japanscta' do
+    send_file 'views/JapanSCTA.json'
+end
+
 def add_param(url, param_name, param_value)
     uri = URI(url)
     params = URI.decode_www_form(uri.query || "") << [param_name, param_value]

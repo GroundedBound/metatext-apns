@@ -1,0 +1,56 @@
+{
+  "meta": {
+    "title": "特定商取引法に基づく表示",
+    "version": 1
+  },
+  "table": {
+    "header": "「特定商取引に関する法律」第11条に基づき、以下のとおり表示いたします。",
+    "rows": [
+      {
+        "title": "販売事業者・代表者",
+        "body": "KUANG JUNYU"
+      },
+      {
+        "title": "お問い合わせメール",
+        "body": "theSpringApp@gmail.com",
+	"url": "mailto:theSpringApp@gmail.com?subject=Mona%20%E3%81%8A%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B"
+      },
+      {
+        "title": "電話番号",
+        "body": "ご請求があった場合には、遅滞なく開示いたします。"
+      },
+      {
+        "title": "所在地",
+        "body": "ご請求があった場合には、遅滞なく開示いたします。"
+      },
+      {
+        "title": "販売価格",
+        "body": "商品ページに表示された価格（税込）となります。"
+      },
+      {
+        "title": "販売価格以外に必要となる費用",
+        "body": "インターネット接続に必要な通信料等はお客様のご負担となります。"
+      },
+      {
+        "title": "提供時期",
+        "body": "購入手続き完了後、直ちにご利用いただけます。"
+      },
+      {
+        "title": "お支払い方法",
+        "body": "App Storeにおけるアプリ内課金により決済されます。\nApp Storeのお支払い方法の設定・変更につきましては、こちらのAppleのサポートページをご確認ください：https://support.apple.com/ja-jp/118429",
+	"url": "https://support.apple.com/ja-jp/118429"
+      },
+      {
+        "title": "キャンセル・解約について",
+        "body": "（1）一度ご購入いただいたデジタルコンテンツにつきましては、その特性上、キャンセル・返金はお受けできません。\n（2）サブスクリプションについては、いつでも解約手続きを行うことができます。ただし、更新日の24時間前までに解約手続きを完了されない場合、自動更新されることがあります。また、ご利用期間の途中で解約された場合でも、既にお支払いいただいた料金の返金（日割計算による返金を含みます）はいたしかねます。\nサブスクリプションの解約方法については、こちらのAppleのサポートページをご確認ください：https://support.apple.com/ja-jp/118428",
+	"url": "https://support.apple.com/ja-jp/118428"
+      },
+      {
+        "title": "動作環境・互換性",
+        "body": "App Storeの商品ページに表示しております。",
+	"url": "https://getmona.app"
+      }
+    ],
+    "footer": "本表示は、日本の特定商取引に関する法律に基づき、日本国内の消費者に向けて表示するものです。\nThis disclosure is provided in accordance with the Specified Commercial Transactions Act of Japan for consumers located in Japan."
+  }
+}
