@@ -37,18 +37,23 @@
       },
       {
         "title": "お支払い方法",
-        "body": "App Storeにおけるアプリ内課金により決済されます。\nApp Storeのお支払い方法の設定・変更につきましては、こちらのAppleのサポートページをご確認ください：https://support.apple.com/ja-jp/118429",
-	"url": "https://support.apple.com/ja-jp/118429"
+        "body": "App Storeにおけるアプリ内課金により決済されます。\nApp Storeのお支払い方法の設定・変更につきましては、Appleのサポートページをご確認ください：https://support.apple.com/ja-jp/118429",
+        "url": "https://support.apple.com/ja-jp/118429"
       },
       {
-        "title": "キャンセル・解約について",
-        "body": "（1）一度ご購入いただいたデジタルコンテンツにつきましては、その特性上、キャンセル・返金はお受けできません。\n（2）サブスクリプションについては、いつでも解約手続きを行うことができます。ただし、更新日の24時間前までに解約手続きを完了されない場合、自動更新されることがあります。また、ご利用期間の途中で解約された場合でも、既にお支払いいただいた料金の返金（日割計算による返金を含みます）はいたしかねます。\nサブスクリプションの解約方法については、こちらのAppleのサポートページをご確認ください：https://support.apple.com/ja-jp/118428",
-	"url": "https://support.apple.com/ja-jp/118428"
+        "title": "サブスクリプションの解約",
+        "body": "サブスクリプションについては、いつでも解約手続きを行うことができます。ただし、更新日の24時間前までに解約手続きを完了されない場合、自動更新されることがあります。また、ご利用期間の途中で解約された場合でも、既にお支払いいただいた料金の返金（日割計算による返金を含みます）はいたしかねます。\nサブスクリプションの解約方法につきましては、Appleのサポートページをご確認ください：https://support.apple.com/ja-jp/118428",
+        "url": "https://support.apple.com/ja-jp/118428"
+      },
+      {
+        "title": "キャンセル・返金",
+        "body": "一度ご購入いただいたデジタルコンテンツにつきましては、App Storeの仕組みにより、開発者側では返金処理を行うことができません。\n返金の可否および手続きは、App Storeの規定に基づきAppleが判断・管理しております。\n返金をご希望の場合は、Appleのサポートページよりお手続きください：https://support.apple.com/ja-jp/118223",
+        "url": "https://support.apple.com/ja-jp/118223"
       },
       {
         "title": "動作環境・互換性",
-        "body": "App Storeの商品ページに表示しております。",
-	"url": "https://getmona.app"
+        "body": "App Storeのプロダクトページに表示しております。",
+        "url": "https://getmona.app"
       }
     ],
     "footer": "本表示は、日本の特定商取引に関する法律に基づき、日本国内の消費者に向けて表示するものです。\nThis disclosure is provided in accordance with the Specified Commercial Transactions Act of Japan for consumers located in Japan."
