@@ -13,7 +13,8 @@
       {
         "title": "お問い合わせメール",
         "body": "theSpringApp@gmail.com",
-	"url": "mailto:theSpringApp@gmail.com?subject=Mona%20%E3%81%8A%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B"
+        "highlight": "theSpringApp@gmail.com",
+        "url": "mailto:theSpringApp@gmail.com?subject=Mona%20%E3%81%8A%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B"
       },
       {
         "title": "電話番号",
@@ -53,6 +54,7 @@
       {
         "title": "動作環境・互換性",
         "body": "App Storeのプロダクトページに表示しております。",
+        "highlight": "App Storeのプロダクトページ",
         "url": "https://getmona.app"
       }
     ],
