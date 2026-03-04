@@ -144,7 +144,7 @@ get '/' do
   
   erb :DownloadMona, locals: {
     auto_redirect: true,
-    app_id: ip_in_japan?(ip) ? "1659154653" : "6755672518"
+    app_id: "6755672518"
   }
 end
 
@@ -153,7 +153,7 @@ get '/home' do
     
     erb :DownloadMona, locals: {
       auto_redirect: false,
-      app_id: ip_in_japan?(ip) ? "1659154653" : "6755672518"
+      app_id: "6755672518"
     }
 end
 
