@@ -148,6 +148,15 @@ get '/' do
   }
 end
 
+get '/classic' do
+  ip = request.ip
+  
+  erb :DownloadMona, locals: {
+    auto_redirect: true,
+    app_id: "1659154653"
+  }
+end
+
 get '/home' do
     ip = request.ip
     
