@@ -94,8 +94,8 @@ def parse_photo_record(record)
     thumbnail = fields.dig("thumbnail", "value")
     
     if thumbnail_mime && thumbnail && !mimes.empty? && !files.empty?
-        mimes[0] = thumbnail_mime
-        files[0] = thumbnail
+        mimes.insert(0, thumbnail_mime)
+        files.insert(0, thumbnail)
     end
     
     results = []
@@ -114,7 +114,7 @@ end
 
 def valid_parsed_photo_record?(arr)
     return false unless arr.is_a?(Array)
-    return false unless arr.length == 1 || arr.length == 2
+    return false unless arr.length == 2 || arr.length == 3
     
     return false unless arr.all? do |item|
         version = item[:version]
@@ -126,9 +126,10 @@ def valid_parsed_photo_record?(arr)
     end
     
     first_is_image = arr[0][:MIME].start_with?("image/")
-    return first_is_image if arr.length == 1
+    second_is_image = arr[1][:MIME].start_with?("image/")
+    return first_is_image && second_is_image if arr.length == 2
     
-    first_is_image && arr[1][:MIME].start_with?("video/")
+    first_is_image && second_is_image && arr[2][:MIME].start_with?("video/")
 end
 
 def show_live_photos(id, environment)
@@ -144,8 +145,9 @@ def show_live_photos(id, environment)
     return nil if valid_photo_records.empty?
     
     structured_records = valid_photo_records.map do |record_arr|
-        output = { photo: record_arr[0] }
-        output[:video] = record_arr[1] if record_arr.length == 2
+        output = { thumbnail: record_arr[0] }
+        output[:photo] = record_arr[1] if record_arr.length >= 2
+        output[:video] = record_arr[2] if record_arr.length >= 3
         output
     end
     
