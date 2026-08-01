@@ -93,9 +93,14 @@ def parse_photo_record(record)
     thumbnail_mime = fields.dig("thumbnailMIME", "value")
     thumbnail = fields.dig("thumbnail", "value")
     
-    if thumbnail_mime && thumbnail && !mimes.empty? && !files.empty?
-        mimes.insert(0, thumbnail_mime)
-        files.insert(0, thumbnail)
+    if !mimes.empty? && !files.empty?
+        if thumbnail_mime && thumbnail
+            mimes.insert(0, thumbnail_mime)
+            files.insert(0, thumbnail)
+        else
+            mimes.insert(0, mimes[0])
+            files.insert(0, files[0])
+        end
     end
     
     results = []
@@ -114,7 +119,7 @@ end
 
 def valid_parsed_photo_record?(arr)
     return false unless arr.is_a?(Array)
-    return false unless arr.length > 0 && arr.length <= 3
+    return false unless arr.length == 2 || arr.length == 3
     
     return false unless arr.all? do |item|
         version = item[:version]
@@ -125,7 +130,11 @@ def valid_parsed_photo_record?(arr)
         size.is_a?(Numeric) && size <= CK_ASSET_DOWNLOAD_SIZE_LIMIT
     end
     
-    return true
+    first_is_image = arr[0][:MIME].start_with?("image/")
+    second_is_image = arr[1][:MIME].start_with?("image/")
+    return first_is_image && second_is_image if arr.length == 2
+    
+    first_is_image && second_is_image && arr[2][:MIME].start_with?("video/")
 end
 
 def show_live_photos(id, environment)
@@ -136,7 +145,12 @@ def show_live_photos(id, environment)
     return nil unless records.is_a?(Array)
     
     photo_records = records.map { |record| parse_photo_record(record) }
-    valid_photo_records = photo_records&.select { |record| valid_parsed_photo_record?(record) }
+    
+    valid_photo_records = photo_records
+        &.select { |record| valid_parsed_photo_record?(record) }
+        &.map do |record|
+            record.map { |asset| asset.reject { |key, _| key.to_s == "version" } }
+        end
     
     return nil if valid_photo_records.empty?
     
