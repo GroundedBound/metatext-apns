@@ -114,7 +114,7 @@ end
 
 def valid_parsed_photo_record?(arr)
     return false unless arr.is_a?(Array)
-    return false unless arr.length == 2 || arr.length == 3
+    return false unless arr.length > 0 && arr.length <= 3
     
     return false unless arr.all? do |item|
         version = item[:version]
@@ -125,11 +125,7 @@ def valid_parsed_photo_record?(arr)
         size.is_a?(Numeric) && size <= CK_ASSET_DOWNLOAD_SIZE_LIMIT
     end
     
-    first_is_image = arr[0][:MIME].start_with?("image/")
-    second_is_image = arr[1][:MIME].start_with?("image/")
-    return first_is_image && second_is_image if arr.length == 2
-    
-    first_is_image && second_is_image && arr[2][:MIME].start_with?("video/")
+    return true
 end
 
 def show_live_photos(id, environment)

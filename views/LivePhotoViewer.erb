@@ -155,10 +155,11 @@
         player.proactivelyLoadsVideo = shouldPlay;
         
         const record = records[index];
-        const photoUrl = record.thumbnail?.downloadURL;
+        const photo = record.thumbnail ?? record.photo
+        const photoUrl = photo?.downloadURL;
         const videoUrl = record.video?.downloadURL;
         
-        player.photoMimeType = record.thumbnail?.MIME;
+        player.photoMimeType = photo?.MIME;
         player.videoMimeType = record.video?.MIME;
         
         if (photoUrl) {
