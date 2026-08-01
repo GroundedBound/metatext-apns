@@ -201,6 +201,21 @@ get '/live_photos/:id' do
     end
 end
 
+get '/api/live_photos/:id' do
+    id = params[:id]
+    if id.nil? || id.empty?
+        halt 400, { error: "Invalid URL" }.to_json
+    end
+    
+    json_string = show_live_photos(id, params[:environment])
+    if json_string
+        content_type :json
+        json_string
+    else
+        halt 404, { error: "Not found" }.to_json
+    end
+end
+
 get '/live_photos' do
     "Invalid URL"
 end
