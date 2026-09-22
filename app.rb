@@ -104,7 +104,11 @@ get '/.well-known/apple-app-site-association' do
 end
 
 get '/api/mona/japanscta' do
-    send_file 'views/JapanSCTA.json'
+    send_file 'views/JapanSCTA-Mona.json'
+end
+
+get '/api/spring/japanscta' do
+    send_file 'views/JapanSCTA-Spring.json'
 end
 
 def add_param(url, param_name, param_value)

@@ -48,6 +48,26 @@
                         "/": "/theme"
                     }
                 ]
+            },
+            {
+                "appIDs": [
+                    "FF973S8UP2.com.jonny.spring-lite"
+                ],
+                "components": [
+                    {
+                        "/": "/open/com.jonny.spring-lite"
+                    }
+                ]
+            },
+            {
+                "appIDs": [
+                    "FF973S8UP2.com.jonny.drift"
+                ],
+                "components": [
+                    {
+                        "/": "/open/com.jonny.drift"
+                    }
+                ]
             }
         ]
     },
